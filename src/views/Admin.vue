@@ -293,7 +293,7 @@ export default {
                         </div>
                         <div class="row mb-0 mt-0">
                         <button style="border:none; background-color:gold" class=" col-md-1  ml-2 mr-2"><small><i class="far fa-thumbs-up fa-lg" >Update</i></small></button>
-                        <button style="border:none; background-color:red" class=" col-md-1 mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button>
+                        <button style="border:none; background-color:red" class=" col-md-1   mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button>
                         </div>
                         <hr>
                         `
@@ -313,40 +313,57 @@ export default {
           // location.reload()
           document.getElementById("commentsList").innerHTML = ''
           if (document.getElementById("commentsList").innerHTML == ''){
-          const usersRef = await db.collection("users").get().then(snapshot => {
-              this.userPosts = []
+            this.users = []
+            const usersRef = await db.collection("posts").get().then(snapshot => {
               snapshot.forEach(doc => {
                 const user = doc.data()
-                    
                     // user.id = doc.id
-                    this.userPosts.push({ user })
+                    this.userPosts.push(user)
 
                     
                 })
-                console.log("we are here")
-                document.getElementById("commentsList").innerHTML += ` <div class="col-md-12 mb-3 m-2" id="" >
+                for( var items = 0 ; items < this.userPosts.length; items++ ){
+                  console.log(this.userPosts[0])
+                  this.post_user = this.userPosts[items].user,
+                  this.post_message = this.userPosts[items].message,
+                  this.post_email = this.userPosts[items].email,
+                  this.post_timestamp = this.userPosts[items].timestamp,
+
+                  document.getElementById("commentsList").innerHTML += ` <div class="col-md-12 mb-3 m-2 mt-5" id="">
                         <div class="text-left row ">
-                        <p> posted By </p>
                         </div>
                         <div class="text-left row ">
-                        <p class="ml-4 mr-4"><b> ${this.userPosts} :</b></p>
-                        <p> ${this.comment} </p>
+                        <p class="ml-4 mr-4"> <b> User:</b></p>
+                        <p> ${ this.post_user } </p>
+                        </div>
+                        <div class="text-left row ">
+                        <p class="ml-4 mr-4"> <b> Message:</b></p>
+                        <p> ${ this.post_message } </p>
+                        </div>
+                        <div class="text-left row ">
+                        <p class="ml-4 mr-4"> <b> Email:</b></p>
+                        <p> ${ this.post_email } </p>
+                        </div>
+                        <div class="text-left row ">
+                        <p class="ml-4 mr-4"> <b> TimeStamp:</b></p>
+                        <p> <small> ${ this.post_timestamp } </small></p>
                         </div>
                         <div class="row mb-0 mt-0">
-                        <button style="border:none; background-color:Transparent" class=" col-md-4  ml-0 mr-0"><small><i class="far fa-thumbs-up fa-lg" >Like</i></small></button>
-                        <button style="border:none; background-color:Transparent" class=" col-md-4 mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)" >Share</i></small></button>
+                        <button style="border:none; background-color:gold" class=" col-md-1  ml-2 mr-2"><small><i class="far fa-thumbs-up fa-lg" >Update</i></small></button>
+                        <button style="border:none; background-color:red" class=" col-md-1   mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button>
                         </div>
                         <hr>
                         `
                 
+                }
             })
             .catch(error => {
                 console.error(error)
             })
         console.debug('fetchUser return: ', this.users);
-          }else{
-            console.log("we are here")
-          }
+            }else{
+              console.log("tuko hapa")
+            }
           
     },
     
