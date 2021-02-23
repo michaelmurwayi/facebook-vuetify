@@ -109,7 +109,7 @@ export default {
             surname: this.surname,
             email: this.email,  
                 })
-          this.$router.replace({path:"/dashboard"})
+          this.$router.replace({path:"/profile"})
         })
         .catch(error => (this.error = error));
     }

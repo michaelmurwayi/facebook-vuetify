@@ -119,7 +119,7 @@
        
          </div>
         </v-app-bar>
-        <v-card col="12" round style="height:400px; background-color:;">
+        <v-card col="12" round style="height:500px; background-color:;">
               <v-col cols="12" sm="8">
               <v-sheet class="mt-0"
               min-height="350"
@@ -177,6 +177,11 @@
         
                 
             </v-avatar>
+            <div style="position:relative; left:65%;">
+
+            <v-card-title> {{ firstname}} {{ surname }} </v-card-title>
+            <v-card-subtitle> Add Bio </v-card-subtitle>
+            </div>
               </v-col>
         <v-divider style="postion:absolute;" inset md="6" cols="12"></v-divider>
         </v-card>
@@ -233,7 +238,7 @@
     </v-card>
     <v-col v-for="post in posts" :key= "post">
     <v-card round max-width="500px" style="position:relative; left:800px; top:-80px;">
-        <v-card-title> Posted by: {{ post.posts.user}} </v-card-title>
+        <v-card-title> Posted by: {{ post.posts.user }} </v-card-title>
         <v-card-subtitle>posted at: {{ post.posts.timestamp }}</v-card-subtitle>
         <p style="margin-left:120px;"> {{ post.posts.message }} </p>
         <v-divider></v-divider>
@@ -255,19 +260,18 @@ require('firebase/database')
 import postsCollection from '../firebase'
 
     export default {
-        name:'Michael',
-        data: function(){
+        data(){
             return{
                 posts:[],
-                user: '',
-                firstname:'',
+                user: 'Users',
+                firstname:'Mikes',
                 surname: '',
                 previewImage:"",
                 newMessage:'',
                 time: '',
-                email:Firebase.auth().currentUser.email,
+                email:Firebase.auth().currentUser,
                 post: '',
-                userId: Firebase.auth().currentUser.uid,
+                // userId: Firebase.auth().currentUser.uid,
                 Likes: 0,
                 currentLikes: 0,
                 Liked: 'false',
@@ -276,14 +280,15 @@ import postsCollection from '../firebase'
                 comment_time: ''
              }
                 },
-        created(){
+
+        mounted(){
+            console.log(Firebase.auth().currentUser)
             this.getPost()
             this.getUsers()
         // console.debug('fetchUser return: ', this.users);
             // const profilePic = db.collection('users').doc(this.email).get()
 
         },
-
         methods:{
 
         uploadProfileImage(event){
@@ -360,7 +365,7 @@ import postsCollection from '../firebase'
                     this.$router.push('/')
             })
         })
-        },
+    },
         postMessage(){
             let timestamp = Date.now();
             let newDate = new Date(timestamp * 1000)
@@ -403,13 +408,14 @@ import postsCollection from '../firebase'
     
     async getPost(){
         this.posts = []
+        console.log("we are getting posts")
         const usersRef = await db.collection("posts").get().then(snapshot => {
             snapshot.forEach(doc => {
                 const posts = doc.data()
                 // user.id = doc.id
                 this.posts.push({ posts })
             })
-            
+        console.log(usersRef)
         })
         .catch(error => {
             console.error(error)

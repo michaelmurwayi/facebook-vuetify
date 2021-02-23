@@ -31,6 +31,7 @@ export{
     db,
     auth,
     usersCollection,
+    postsCollection
     
 }
 

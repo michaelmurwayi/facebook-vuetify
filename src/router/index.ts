@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Login from '../views/Login.vue'
 import Profile from '../views/Profile.vue'
+import Admin from '../views/Admin.vue'
 
 Vue.use(VueRouter)
 
@@ -21,8 +22,19 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/profile',
-    name: '/profile',
-    component: Profile
+    name: 'Profile',
+    component: Profile,
+    meta: {
+      requiredAuth: true
+    }
+  },
+  {
+    path: '/admin',
+    name: '/admin',
+    component: Admin,
+    meta: {
+      requiredAuth: true
+    }
   }
 ]
 

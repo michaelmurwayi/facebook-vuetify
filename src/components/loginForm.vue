@@ -30,7 +30,7 @@ export default {
     methods:{
       pressed(){
         firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(()=>{
-          this.$router.replace({path:"/dashboard"})
+          this.$router.replace({path:"/profile"})
         })
       }
     }
