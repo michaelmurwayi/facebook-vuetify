@@ -1,8 +1,9 @@
 <template>
-  <v-app :style="{background: $vuetify.theme.themes.light.background}">
+  <v-app style="background-color: #E8E8E8">
+    <Navbar/>
     <v-layout row>
       <v-flex md3>
-        <v-app :style="{background: $vuetify.theme.themes.light.background}">
+        <v-app style="background-color: #E8E8E8">
           <v-container>
             <v-flex>
               <v-card class="ma-5 text-center mt-12" shaped elevation="10">
@@ -102,8 +103,8 @@
           </v-container>
         </v-app>
       </v-flex>
-      <v-flex md9>
-        <v-app :style="{background: $vuetify.theme.themes.dark.background}" class="rounded">
+      <v-flex md9 style="margin-top:0px;">
+        <v-app style="background-color:;  border-radius: 40px 40px 40px 40px; margin-top:10px;" shaped elevation="10" >
           <v-container>
             <v-flex>
               <v-list class="mt-5">
@@ -177,9 +178,10 @@
               </v-row>
             </v-flex>
              <v-flex>
-            <hr>
-            <div id="commentsList"> 
-                
+            <div id="commentsList">
+              <div class="row">
+                <p>We are here</p>
+                </div> 
             </div>
               
             </v-flex>
@@ -197,6 +199,7 @@ import { db } from '../firebase'
 require('firebase/auth')
 require('firebase/database')
 import postsCollection from '../firebase'
+import Navbar from '@/components/Navbar.vue'
 // const admin = require('firebase-admin')
 const gradients = [
     ['#222'],
@@ -208,7 +211,7 @@ const gradients = [
   ]
 export default {
   data: () => ({
-     width: 2,
+    width: 2,
     radius: 10,
     padding: 8,
     lineCap: 'round',
@@ -228,7 +231,14 @@ export default {
     theme() {
       return this.$vuetify.theme.dark ? "dark" : "light";
     }
+  
   },
+  components: {
+    Navbar,
+    },
+
+ 
+
   mounted () {
       this.arrayEvents = [...Array(6)].map(() => {
         const day = Math.floor(Math.random() * 30)
@@ -241,17 +251,15 @@ export default {
     created(){
         // this.getUsers()
     },
-    methods: {
-      functionEvents (date) {
-        const [,, day] = date.split('-')
-        if ([12, 17, 28].includes(parseInt(day, 10))) return true
-        if ([1, 19, 22].includes(parseInt(day, 10))) return ['red', '#00f']
-        return false
-      },
-    },
-
-    methods:{
-
+      
+      methods:{
+        
+        functionEvents (date) {
+          const [,, day] = date.split('-')
+          if ([12, 17, 28].includes(parseInt(day, 10))) return true
+          if ([1, 19, 22].includes(parseInt(day, 10))) return ['red', '#00f']
+          return false
+        },
         async getUsers(){
           // this.users = []
           document.getElementById("commentsList").innerHTML = ''
@@ -271,11 +279,13 @@ export default {
                   this.user_Surname = this.users[items].surname,
                   this.user_email = this.users[items].email,
                   this.user_ProfilePic = this.users[items].profilePic,
-
+                  this.header = "User"
                   document.getElementById("commentsList").innerHTML += ` <div class="col-md-12 mb-3 m-2 mt-5" id="">
-                        <div class="text-left row ">
+                        <div class="text-left row " style="margin-top:15px; margin-left:400px;">
+                        <h2> ${ this.header } </h2>
                         </div>
-                        <div class="text-left row ">
+                        <hr style="border-top:2px dashed grey; margin-top:5px;">
+                        <div class="text-left row" style="margin-top:10px;">
                         <p class="ml-4 mr-4"> <b> Firstname:</b></p>
                         <p> ${ this.user_firstname } </p>
                         </div>
@@ -295,7 +305,6 @@ export default {
                         <button style="border:none; background-color:gold" class=" col-md-1  ml-2 mr-2"><small><i class="far fa-thumbs-up fa-lg" >Update</i></small></button>
                         <button style="border:none; background-color:red" class=" col-md-1   mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button>
                         </div>
-                        <hr>
                         `
                 
                 }
@@ -313,7 +322,7 @@ export default {
           // location.reload()
           document.getElementById("commentsList").innerHTML = ''
           if (document.getElementById("commentsList").innerHTML == ''){
-            this.users = []
+            this.userPosts = []
             const usersRef = await db.collection("posts").get().then(snapshot => {
               snapshot.forEach(doc => {
                 const user = doc.data()
@@ -328,11 +337,13 @@ export default {
                   this.post_message = this.userPosts[items].message,
                   this.post_email = this.userPosts[items].email,
                   this.post_timestamp = this.userPosts[items].timestamp,
-
+                  this.header = "Posts" 
                   document.getElementById("commentsList").innerHTML += ` <div class="col-md-12 mb-3 m-2 mt-5" id="">
-                        <div class="text-left row ">
+                        <div class="text-left row " style="margin-top:15px; margin-left:400px;">
+                        <h2> ${ this.header } </h2>
                         </div>
-                        <div class="text-left row ">
+                        <hr style="border-top:2px dashed grey; margin-top:5px;">
+                        <div class="text-left row " style="margin-top:50px;">
                         <p class="ml-4 mr-4"> <b> User:</b></p>
                         <p> ${ this.post_user } </p>
                         </div>
@@ -352,7 +363,6 @@ export default {
                         <button style="border:none; background-color:gold" class=" col-md-1  ml-2 mr-2"><small><i class="far fa-thumbs-up fa-lg" >Update</i></small></button>
                         <button style="border:none; background-color:red" class=" col-md-1   mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button>
                         </div>
-                        <hr>
                         `
                 
                 }
