@@ -111,8 +111,8 @@
                 <v-list-item>
                   <v-list-item-title class="cyan--text text--darken-1">Administration Page</v-list-item-title>
                   <v-list-item-action>
-                    <v-btn class="ma-2" tile outlined color="cyan darken-1">
-                      <v-icon left>fas fa-eye</v-icon>See All
+                    <v-btn class="ma-2" tile outlined color="cyan darken-1" @click= overview()>
+                      <v-icon left>fas fa-eye</v-icon>OverView
                     </v-btn>
                   </v-list-item-action>
                   
@@ -132,7 +132,7 @@
                     <v-list-item-content>
                        <v-list-item-subtitle> Users</v-list-item-subtitle>
                       <v-list-item-title><v-btn color="success" @click= getUsers() >See All</v-btn></v-list-item-title>
-                      <v-list-item-subtitle>Ongoing tratment</v-list-item-subtitle>
+                      <v-list-item-subtitle>See all System Users</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -150,7 +150,7 @@
                     <v-list-item-content>
                        <v-list-item-subtitle>Posts</v-list-item-subtitle>
                       <v-list-item-title><v-btn color="primary" @click= getPosts() >See All</v-btn></v-list-item-title>
-                      <v-list-item-subtitle>Incurable</v-list-item-subtitle>
+                      <v-list-item-subtitle>See all User Posts</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -168,7 +168,7 @@
                     <v-list-item-content>
                        <v-list-item-subtitle>Uploads</v-list-item-subtitle>
                       <v-list-item-title><v-btn>See All</v-btn></v-list-item-title>
-                      <v-list-item-subtitle>Examiniations</v-list-item-subtitle>
+                      <v-list-item-subtitle>See all uploaded Files</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -179,8 +179,19 @@
             </v-flex>
              <v-flex>
             <div id="commentsList">
-              <div class="row">
-                <p>We are here</p>
+              <div class="row " style=" margin:40px; box-shadow: 10px 0px 10px 0px grey;">
+                <div class="col-md-4">
+                  <p>Number Of Users</p>
+                 <h2>{{ this.usersCount }}</h2>
+                </div>
+                <div class="col-md-4">
+                  <p>Number Of Posts</p>
+                  <h2>{{ this.postsCount }}</h2>
+                </div>
+                <div class="col-md-4">
+                  <p>Number Of Uploads</p>
+                  <h2> -- </h2>
+                </div>
                 </div> 
             </div>
               
@@ -224,6 +235,8 @@ export default {
     autoLineWidth: false,
     users: [],
     userPosts: [],
+    usersCount: '',
+    postsCount:'',
     arrayEvents: null,
     date2: new Date().toISOString().substr(0, 10),
   }),
@@ -249,7 +262,8 @@ export default {
     },
 
     created(){
-        // this.getUsers()
+        this.getUsersCount()
+        this.getPostsCount()
     },
       
       methods:{
@@ -385,8 +399,19 @@ export default {
 
     async deleteUser(key){
             db.collection("users").doc(key).delete()
-        }
+        },
+    getUsersCount(){
+      db.collection('users').get()
+        .then(snapshot => this.usersCount = snapshot.size);
+    },
+    getPostsCount(){
+      db.collection('posts').get()
+        .then(snapshot => this.postsCount = snapshot.size);
+    },
+    overview(){
+      location.reload()
     }
+  }
 
 };
 </script>
