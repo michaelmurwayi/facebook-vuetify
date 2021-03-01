@@ -210,7 +210,7 @@
         >Edit Details</v-btn>
     </v-card>
     <v-card round max-width="500px" style="position:relative; left:800px; top:-120px">
-        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:90px; top:10px;" @keypress.enter= postMessage() ></v-text-field>
+        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:90px; top:10px;" v-model="newMessage" @keyup.enter= "postMessage()" ></v-text-field>
         <v-divider style="position:relative; top:0px;"></v-divider>
         <div>
              <div class="postnav" style=" padding:10px; position:relative; bottom:0px; width:20vw: background:black; left:0%; top:0px; ">
@@ -257,19 +257,21 @@ import 'firebase/storage'
 import { db } from '../firebase'
 require('firebase/auth')
 require('firebase/database')
-import postsCollection from '../firebase'
+
 
     export default {
         data(){
             return{
+                width: '10',
+                size: '',
                 posts:[],
                 user: 'Users',
-                firstname:'Mikes',
+                firstname:'',
                 surname: '',
                 previewImage:"",
                 newMessage:'',
                 time: '',
-                email:Firebase.auth().currentUser,
+                email:'',
                 post: '',
                 // userId: Firebase.auth().currentUser.uid,
                 Likes: 0,
@@ -282,9 +284,9 @@ import postsCollection from '../firebase'
                 },
 
         mounted(){
-            console.log(Firebase.auth().currentUser)
             this.getPost()
             this.getUsers()
+            console.log(this)
         // console.debug('fetchUser return: ', this.users);
             // const profilePic = db.collection('users').doc(this.email).get()
 
@@ -374,7 +376,7 @@ import postsCollection from '../firebase'
             const HourComplete = Hours + ':' + Minutes
             let formatedTime = HourComplete
             const posts = db.collection("posts").doc(this.email).set({
-                email: Firebase.auth().currentUser.email,
+                email: this.email,
                 message: this.newMessage,
                 timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
                 user: this.firstname + this.surname,
@@ -382,20 +384,21 @@ import postsCollection from '../firebase'
 
                 // timestamp: firebase.firestore.timestamp 
             })
+            this.getPost()
             
     },
     postComment(email){
         console.log(email)
         
         var comments = {
-            email: Firebase.auth().currentUser.email,
+            email: this.email,
             comment: this.newComment,
             timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
             user: this.firstname + this.surname,
             }
 
         db.collection("posts").doc(email).get().then(snapshot => {
-                console.log(snapshot.data())
+            console.log(snapshot.data())
                 var allComments = []
                 allComments.push(snapshot.data().comments)
                 allComments.push(comments)
@@ -406,16 +409,16 @@ import postsCollection from '../firebase'
         
     },
     
-    async getPost(){
+    getPost(){
         this.posts = []
         console.log("we are getting posts")
-        const usersRef = await db.collection("posts").get().then(snapshot => {
+        const Posts = db.collection("posts").get().then(snapshot => {
             snapshot.forEach(doc => {
                 const posts = doc.data()
                 // user.id = doc.id
                 this.posts.push({ posts })
             })
-        console.log(usersRef)
+        console.log(Posts)
         })
         .catch(error => {
             console.error(error)
@@ -423,15 +426,27 @@ import postsCollection from '../firebase'
         console.debug('fetchUser return: ', this.posts);
         
 },
-    async getUsers(){
+    getUsers(){
         this.users = []
-        db.collection("users").doc(this.email).get().then(snapshot => {
-            this.firstname = snapshot.data().firstname
-            this.surname = snapshot.data().surname
-            this.previewImage = snapshot.data().profilePic
-            
-        })
-
+        Firebase.auth().onAuthStateChanged(function(user){
+            if (user){
+                this.email = user.email
+                console.log(this.email)
+                db.collection("users").doc(this.email).get().then(snapshot => {
+                    console.log(snapshot)
+                    this.firstname = snapshot.data().firstname
+                    this.surname = snapshot.data().surname
+                    this.previewImage = snapshot.data().profilePic
+                        
+                    })
+            } else {
+                // No user is signed in.
+            }
+            console.log(this.email)
+            console.log(this.firstname)
+            }.bind(this)
+            );
+        
 },
    addLike (email) {
     if( this.Liked == 'false'){
