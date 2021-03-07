@@ -8,6 +8,7 @@
             <v-flex>
               <v-card class="ma-5 text-center mt-12" shaped elevation="10">
                 <v-avatar class="mt-n7" size="60" elevation="10">
+
                   <img :src="previewImage" />
                 </v-avatar>
                 <v-card-title class="layout justify-center"> {{ firstname }} {{ surname }} </v-card-title>
@@ -19,6 +20,7 @@
               <v-list color="transparent" class="text-center">
                 <v-list-item>
                   <v-list-item-title class="cyan--text text--darken-1">Notifications</v-list-item-title>
+
                   <v-list-item-subtitle> {{ date }} </v-list-item-subtitle>
                 </v-list-item>
               </v-list>
