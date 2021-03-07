@@ -1,35 +1,25 @@
 <template>
-  <v-app :style="{background: $vuetify.theme.themes.light.background}">
+  <v-app style="background-color: #E8E8E8">
+    <Navbar/>
     <v-layout row>
       <v-flex md3>
-        <v-app :style="{background: $vuetify.theme.themes.light.background}">
+        <v-app style="background-color: #E8E8E8">
           <v-container>
             <v-flex>
               <v-card class="ma-5 text-center mt-12" shaped elevation="10">
                 <v-avatar class="mt-n7" size="60" elevation="10">
-                  <img src="img8.jpg" />
+                  <img :src="previewImage" />
                 </v-avatar>
-                <v-card-title class="layout justify-center"> Mike Will </v-card-title>
-                <v-card-subtitle class="layout justify-center">21 year, Los Angeles </v-card-subtitle>
-                <v-list>
-                  <v-list-item>
-                    <v-list-item-title class="cyan--text text--darken-1">Blood</v-list-item-title>
-                    <v-list-item-title class="cyan--text text--darken-1">height</v-list-item-title>
-                    <v-list-item-title class="cyan--text text--darken-1">Weight</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item class="mt-n5">
-                    <v-list-item-subtitle>-A</v-list-item-subtitle>
-                    <v-list-item-subtitle>250 cm</v-list-item-subtitle>
-                    <v-list-item-subtitle>120 Kg</v-list-item-subtitle>
-                  </v-list-item>
-                </v-list>
+                <v-card-title class="layout justify-center"> {{ firstname }} {{ surname }} </v-card-title>
+                <v-card-subtitle class="layout justify-center">{{ email }} </v-card-subtitle>
+                
               </v-card>
             </v-flex>
             <v-flex>
               <v-list color="transparent" class="text-center">
                 <v-list-item>
                   <v-list-item-title class="cyan--text text--darken-1">Notifications</v-list-item-title>
-                  <v-list-item-subtitle>26 Aug 2019</v-list-item-subtitle>
+                  <v-list-item-subtitle> {{ date }} </v-list-item-subtitle>
                 </v-list-item>
               </v-list>
             </v-flex>
@@ -38,49 +28,41 @@
                 <v-list>
                   <v-list-item>
                     <v-list-item-avatar size="10" color="cyan darken-1"></v-list-item-avatar>
-                    <v-list-item-title class="ml-n2">Kognum</v-list-item-title>
-                    <v-list-item-subtitle>10 mg</v-list-item-subtitle>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-list-item-title class="cyan--text text--darken-1">MON</v-list-item-title>
-                    <v-list-item-title class="cyan--text text--darken-1">WED</v-list-item-title>
-                    <v-list-item-title class="cyan--text text--darken-1">FRI</v-list-item-title>
-                    <v-list-item-title class="cyan--text text--darken-1">SUN</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item class="mt-n5">
-                    <v-list-item-subtitle>2 times in a day before food</v-list-item-subtitle>
+                    <v-list-item-title class="ml-n2">Edit user Details</v-list-item-title>
                   </v-list-item>
                   <v-divider></v-divider>
+                  <v-divider></v-divider>
                 </v-list>
-                <v-list two-line subheader>
-                  <v-list-item>
-                    <v-list-item-avatar size="35">
-                      <img src="img4.png" />
-                    </v-list-item-avatar>
-                    <v-list-item-content class="ml-n5">
-                      <v-list-item-title>Dr.Isabella Bowers</v-list-item-title>
-                      <v-list-item-subtitle>California Hospital Medical</v-list-item-subtitle>
-                    </v-list-item-content>
+                <form @submit.prevent="EditUser">
+
+                <v-list-item class="mt-n2">
+                    <v-text-field label="Firstname"  :placeholder= firstname min="10" ></v-text-field>
                   </v-list-item>
-                </v-list>
-                <v-list two-line subheader class="mt-n5">
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title>Surgeon</v-list-item-title>
-                      <v-list-item-subtitle>spinal pain</v-list-item-subtitle>
-                    </v-list-item-content>
+                <v-list-item class="mt-n5">
+                    <v-text-field label="Surname" :placeholder= surname></v-text-field>
                   </v-list-item>
-                </v-list>
-                <v-list two-line subheader class="mt-n8">
-                  <v-list-item>
-                    <v-list-item-title class="cyan--text text--darken-1">Date</v-list-item-title>
-                    <v-list-item-title class="cyan--text text--darken-1">Time</v-list-item-title>
+                <v-list-item class="mt-n5">
+                    <v-text-field label="Email" :placeholder= email></v-text-field> 
                   </v-list-item>
-                  <v-list-item class="mt-n10">
-                    <v-list-item-title>26 Aug 2019</v-list-item-title>
-                    <v-list-item-title>12:45 AM</v-list-item-title>
+                <v-list-item class="mt-n5">
+                    <p class=" mt-4 mr-2 cyan--text text--darken-1">UserId:</p>
+                    <v-list-item-subtitle>2 times in a day before food</v-list-item-subtitle>
                   </v-list-item>
-                </v-list>
+                <v-btn
+                  class="mx-2 mr-n10"
+                  fab
+                  dark
+                  large
+                  color="cyan"
+                  style="position:relative; left:220px; bottom:10px;"
+                >
+                  <v-icon dark>
+                    mdi-pencil
+                  </v-icon>
+                  Edit
+                </v-btn> 
+                </form>
+                  
               </v-card>
             </v-flex>
             <v-flex>
@@ -90,28 +72,27 @@
                     <v-list-item-title class="headline mb-1">
                       <v-icon>fab fa-cc-visa</v-icon>
                     </v-list-item-title>
-                    <v-list-item-subtitle>2345 4645 7865 5432</v-list-item-subtitle>
                   </v-list-item-content>
 
-                  <v-list-item-avatar size="60" color="cyan darken-1">
-                    <v-icon color="white">fas fa-plus</v-icon>
-                  </v-list-item-avatar>
+                  <v-btn size="60" color="red darken-1">
+                    delete
+                  </v-btn>
                 </v-list-item>
               </v-card>
             </v-flex>
           </v-container>
         </v-app>
       </v-flex>
-      <v-flex md9>
-        <v-app :style="{background: $vuetify.theme.themes.dark.background}" class="rounded">
+      <v-flex md9 style="margin-top:0px;">
+        <v-app style="background-color:;  border-radius: 40px 40px 40px 40px; margin-top:10px;" shaped elevation="10" >
           <v-container>
             <v-flex>
               <v-list class="mt-5">
                 <v-list-item>
                   <v-list-item-title class="cyan--text text--darken-1">Administration Page</v-list-item-title>
                   <v-list-item-action>
-                    <v-btn class="ma-2" tile outlined color="cyan darken-1">
-                      <v-icon left>fas fa-eye</v-icon>See All
+                    <v-btn class="ma-2" tile outlined color="cyan darken-1" @click= overview()>
+                      <v-icon left>fas fa-eye</v-icon>OverView
                     </v-btn>
                   </v-list-item-action>
                   
@@ -131,7 +112,7 @@
                     <v-list-item-content>
                        <v-list-item-subtitle> Users</v-list-item-subtitle>
                       <v-list-item-title><v-btn color="success" @click= getUsers() >See All</v-btn></v-list-item-title>
-                      <v-list-item-subtitle>Ongoing tratment</v-list-item-subtitle>
+                      <v-list-item-subtitle>See all System Users</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -149,7 +130,7 @@
                     <v-list-item-content>
                        <v-list-item-subtitle>Posts</v-list-item-subtitle>
                       <v-list-item-title><v-btn color="primary" @click= getPosts() >See All</v-btn></v-list-item-title>
-                      <v-list-item-subtitle>Incurable</v-list-item-subtitle>
+                      <v-list-item-subtitle>See all User Posts</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -167,7 +148,7 @@
                     <v-list-item-content>
                        <v-list-item-subtitle>Uploads</v-list-item-subtitle>
                       <v-list-item-title><v-btn>See All</v-btn></v-list-item-title>
-                      <v-list-item-subtitle>Examiniations</v-list-item-subtitle>
+                      <v-list-item-subtitle>See all uploaded Files</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
                 </v-list>
@@ -177,9 +158,83 @@
               </v-row>
             </v-flex>
              <v-flex>
-            <hr>
-            <div id="commentsList"> 
-                
+            <div id="commentsList">
+              <div class="row " style=" margin:40px; box-shadow: 10px 0px 10px 0px grey;">
+                <div class="col-md-4">
+                  <p>Number Of Users</p>
+                 <h2>{{ this.usersCount }}</h2>
+                </div>
+                <div class="col-md-4">
+                  <p>Number Of Posts</p>
+                  <h2>{{ this.postsCount }}</h2>
+                </div>
+                <div class="col-md-4">
+                  <p>Number Of Uploads</p>
+                  <h2> -- </h2>
+                </div>
+                </div>
+                <div v-if= "view  === 'Users'">
+                  <div v-for= "items in users" :key= items>
+                   <div class="col-md-12 mb-3 m-2 mt-5" id="">
+                        <div class="text-left row " style="margin-top:15px; margin-left:400px;">
+                        <h2> User </h2>
+                        </div>
+                        <hr style="border-top:2px dashed grey; margin-top:5px;">
+                        <div class="text-left row" style="margin-top:10px;">
+                        <p class="ml-4 mr-4"> <b> Firstname:</b></p>
+                        <p> {{items.user.firstname}} </p>
+                        </div>
+                        <div class="text-left row ">
+                        <p class="ml-4 mr-4"> <b> Surname:</b></p>
+                        <p> {{  items.user.surname }}  </p>
+                        </div>
+                        <div class="text-left row ">
+                        <p class="ml-4 mr-4"> <b> Email:</b></p>
+                        <p> {{ items.user.email }} </p>
+                        </div>
+                        <div class="text-left row ">
+                        <p class="ml-4 mr-4"> <b> profile Pic:</b></p>
+                        <p> <small> {{ items.user.ProfilePic }} </small></p>
+                        </div>
+                        <div class="row mb-0 mt-0">
+                        <v-btn color="warning" @click= viewUser(items.user.email) >View User</v-btn>
+                      </div>
+
+                    </div>
+                  </div>
+                   </div>
+                  <div v-else-if= "view === 'Posts'">
+                    <div v-for="post in userPosts" :key="post">
+
+                     <div class="col-md-12 mb-3 m-2 mt-5" id="">
+                        <div class="text-left row " style="margin-top:15px; margin-left:400px;">
+                        <h2> Post </h2>
+                        </div>
+                        <hr style="border-top:2px dashed grey; margin-top:5px;">
+                        <div class="text-left row " style="margin-top:50px;">
+                        <p class="ml-4 mr-4"> <b> Posted By:</b></p>
+                        <p> {{ post.user }} </p>
+                        </div>
+                        <div class="text-left row ">
+                        <p class="ml-4 mr-4"> <b> Message:</b></p>
+                        <p> {{ post.message }} </p>
+                        </div>
+                        <div class="text-left row ">
+                        <p class="ml-4 mr-4"> <b> Email:</b></p>
+                        <p> {{ post.email  }} </p>
+                        </div>
+                        <div class="text-left row ">
+                        <p class="ml-4 mr-4"> <b> TimeStamp:</b></p>
+                        <p> <small> {{ post.timestamp }} </small></p>
+                        </div>
+                        <div class="row mb-0 mt-0">
+                        <button style="border:none; background-color:red" class=" col-md-1   mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button>
+                        </div>
+                    </div>
+                  </div>
+                      
+                        
+                </div> 
             </div>
               
             </v-flex>
@@ -197,6 +252,7 @@ import { db } from '../firebase'
 require('firebase/auth')
 require('firebase/database')
 import postsCollection from '../firebase'
+import Navbar from '@/components/Navbar.vue'
 // const admin = require('firebase-admin')
 const gradients = [
     ['#222'],
@@ -208,7 +264,7 @@ const gradients = [
   ]
 export default {
   data: () => ({
-     width: 2,
+    width: 2,
     radius: 10,
     padding: 8,
     lineCap: 'round',
@@ -221,14 +277,29 @@ export default {
     autoLineWidth: false,
     users: [],
     userPosts: [],
+    usersCount: '',
+    postsCount:'',
     arrayEvents: null,
     date2: new Date().toISOString().substr(0, 10),
+    firstname: '',
+    surname: '',
+    previewImage: '',
+    email:'',
+    date: Date.now(),
+    view: ''
   }),
   computed: {
     theme() {
       return this.$vuetify.theme.dark ? "dark" : "light";
     }
+  
   },
+  components: {
+    Navbar,
+    },
+
+ 
+
   mounted () {
       this.arrayEvents = [...Array(6)].map(() => {
         const day = Math.floor(Math.random() * 30)
@@ -239,117 +310,54 @@ export default {
     },
 
     created(){
-        // this.getUsers()
+        this.getUsersCount()
+        this.getPostsCount()
+        this.getUser()
+        console.log(this.view)
     },
-    methods: {
-      functionEvents (date) {
-        const [,, day] = date.split('-')
-        if ([12, 17, 28].includes(parseInt(day, 10))) return true
-        if ([1, 19, 22].includes(parseInt(day, 10))) return ['red', '#00f']
-        return false
-      },
-    },
-
-    methods:{
-
-        async getUsers(){
-          // this.users = []
-          document.getElementById("commentsList").innerHTML = ''
-          if (document.getElementById("commentsList").innerHTML == ''){
+      
+      methods:{
+        
+        functionEvents (date) {
+          const [,, day] = date.split('-')
+          if ([12, 17, 28].includes(parseInt(day, 10))) return true
+          if ([1, 19, 22].includes(parseInt(day, 10))) return ['red', '#00f']
+          return false
+        },
+          async getUsers(){
             this.users = []
+            this.view = 'Users'
             const usersRef = await db.collection("users").get().then(snapshot => {
-              snapshot.forEach(doc => {
-                const user = doc.data()
+                snapshot.forEach(doc => {
+                    const user = doc.data()
+                    console.log(user)
                     // user.id = doc.id
-                    this.users.push(user)
-
+                    this.users.push({ user })
                     
                 })
-                for( var items = 0 ; items < this.users.length; items++ ){
-                  console.log(this.users[0])
-                  this.user_firstname = this.users[items].firstname,
-                  this.user_Surname = this.users[items].surname,
-                  this.user_email = this.users[items].email,
-                  this.user_ProfilePic = this.users[items].profilePic,
-
-                  document.getElementById("commentsList").innerHTML += ` <div class="col-md-12 mb-3 m-2 mt-5" id="">
-                        <div class="text-left row ">
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> Firstname:</b></p>
-                        <p> ${ this.user_firstname } </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> Surname:</b></p>
-                        <p> ${ this.user_surname } </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> Email:</b></p>
-                        <p> ${ this.user_email } </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> profile Pic:</b></p>
-                        <p> <small> ${ this.user_ProfilePic } </small></p>
-                        </div>
-                        <div class="row mb-0 mt-0">
-                        <button style="border:none; background-color:gold" class=" col-md-1  ml-2 mr-2"><small><i class="far fa-thumbs-up fa-lg" >Update</i></small></button>
-                        <button style="border:none; background-color:red" class=" col-md-1 mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button>
-                        </div>
-                        <hr>
-                        `
                 
-                }
             })
             .catch(error => {
                 console.error(error)
             })
         console.debug('fetchUser return: ', this.users);
-            }else{
-              console.log("tuko hapa")
-            }
             
     },
+
         async getPosts(){
           // location.reload()
-          document.getElementById("commentsList").innerHTML = ''
-          if (document.getElementById("commentsList").innerHTML == ''){
-          const usersRef = await db.collection("users").get().then(snapshot => {
-              this.userPosts = []
-              snapshot.forEach(doc => {
-                const user = doc.data()
-                    
-                    // user.id = doc.id
-                    this.userPosts.push({ user })
-
-                    
+          console.log(this.view)
+          this.userPosts = []
+          const usersRef = await db.collection("posts").get().then(snapshot => {
+            snapshot.forEach(doc => {
+              this.view = "Posts"
+              const user = doc.data()
+                  // user.id = doc.id
+                  this.userPosts.push(user)                    
                 })
-                console.log("we are here")
-                document.getElementById("commentsList").innerHTML += ` <div class="col-md-12 mb-3 m-2" id="" >
-                        <div class="text-left row ">
-                        <p> posted By </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"><b> ${this.userPosts} :</b></p>
-                        <p> ${this.comment} </p>
-                        </div>
-                        <div class="row mb-0 mt-0">
-                        <button style="border:none; background-color:Transparent" class=" col-md-4  ml-0 mr-0"><small><i class="far fa-thumbs-up fa-lg" >Like</i></small></button>
-                        <button style="border:none; background-color:Transparent" class=" col-md-4 mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)" >Share</i></small></button>
-                        </div>
-                        <hr>
-                        `
-                
-            })
-            .catch(error => {
-                console.error(error)
-            })
-        console.debug('fetchUser return: ', this.users);
-          }else{
-            console.log("we are here")
-          }
-          
-    },
-    
+                          
+    })
+      },
     async deleteUser(key){
             console.log(key)
             auth.deleteUser(key)
@@ -358,10 +366,54 @@ export default {
 
     async deleteUser(key){
             db.collection("users").doc(key).delete()
+        },
+    getUsersCount(){
+      db.collection('users').get()
+        .then(snapshot => this.usersCount = snapshot.size);
+    },
+    getPostsCount(){
+      db.collection('posts').get()
+        .then(snapshot => this.postsCount = snapshot.size);
+    },
+    overview(){
+      location.reload()
+    },
+  
+  viewUser(email){
+      db.collection("users").doc(email).get().then(snapshot => {
+          console.log("we are here " , snapshot)
+            this.firstname = snapshot.data().firstname
+            this.surname = snapshot.data().surname
+            this.email = snapshot.data().email
+            this.previewImage = snapshot.data().profilePic    
+            })   
+    },
+     
+  getUser(){
+    this.users = []
+    console.log("we are here")
+    Firebase.auth().onAuthStateChanged(function(user){
+        if (user){
+          this.email = user.email
+            console.log(this.email)
+            db.collection("users").doc(this.email).get().then(snapshot => {
+              console.log(snapshot)
+                this.firstname = snapshot.data().firstname
+                this.surname = snapshot.data().surname
+                this.previewImage = snapshot.data().profilePic
+                    
+                })
+        } else {
+          // No user is signed in.
         }
-    }
-
-};
+        console.log(this.email)
+        console.log(this.firstname)
+        }.bind(this)
+        )
+    
+    },
+  }
+}
 </script>
 <style scoped>
 .rounded {
