@@ -104,7 +104,7 @@
         </div>
     
       <div v-if="this.status == 'True'" style="margin:10px;">
-        <router-link to="/admin" >
+        <router-link to="/admin">
         <button>
           <small> Admin</small>
         </button>
@@ -140,12 +140,14 @@
                 color="#f0f2f5"
                 size="38"
                 back
-            >        
-        <input type="file" value="upload" title="Add Cover Image" class="btn btn-xs" placeholder="upload" @change="uploadProfileImage($event)" accept="image/*"  style="background:red;">
-        </v-avatar>
-        </a></div>
-            <input type="file" color="black"  style="background:#f0f2f5; 
+            > 
+        <label style="background:#f0f2f5; 
                             right:0px; 
+                            border:none;
+                            content: 'Add cover image'
+                            display: block;
+                            width: 200px;
+                            height: 50px;
                             border-radius:8px; 
                             margin-bottom:20px; 
                             margin-right:20px; 
@@ -153,17 +155,37 @@
                             position:absolute; 
                             text-decoration:none; 
                             color:black; 
-                            font-weight:bold; 
-                            padding-left:5px;
-                ; absolute"  placeholder="Add cover Photo"  id="myFile" name="html" @change="uploadCoverImage($event)" accept="image/*" />              
-
+                            font-weight:bold;  
+                            absolute">
+        <input type="file" value="upload" title="Add Cover Image" class="btn btn-xs" placeholder="upload" @change="uploadProfileImage($event)" accept="image/*"  style="background:red;">
+        </label>       
+        </v-avatar>
+        </a></div>
+            <label upload image placeholder="Add cover image" style="background:#f0f2f5; 
+                            right:0px; 
+                            border:none;
+                            content: 'Add cover image'
+                            display: block;
+                            width: 200px;
+                            height: 50px;
+                            border-radius:8px; 
+                            margin-bottom:20px; 
+                            margin-right:20px; 
+                            padding:5px; bottom:0; 
+                            position:absolute; 
+                            text-decoration:none; 
+                            color:black; 
+                            font-weight:bold;  
+                            absolute">
+            <input type="file" color="black"  id="myFile"  @change="uploadCoverImage($event)" accept="image/*" hidden/>              
+            </label>
             </v-sheet>
         
             <v-avatar
                 class="mt-n20 ml-6"
                 size="158"
                 color="white"
-                style="border:5px solid #000; bottom:175px; z-index:-0; position:absolute; left:42%; top:220px; "
+                style="border:5px solid #000; bottom:175px; z-index:-0; position:absolute; left:42%; top:250px; "
                 >
                 <v-img
                 :width="width"
