@@ -25,7 +25,7 @@ const routes: Array<RouteConfig> = [
     name: 'Profile',
     component: Profile,
     meta: {
-      requiredAuth: true
+      requiresAuth: true
     }
   },
   {
@@ -33,7 +33,7 @@ const routes: Array<RouteConfig> = [
     name: '/admin',
     component: Admin,
     meta: {
-      requiredAuth: true
+      requiresAuth: true
     }
   }
 ]

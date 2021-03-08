@@ -30,6 +30,7 @@
               <v-list color="transparent" class="text-center">
                 <v-list-item>
                   <v-list-item-title class="cyan--text text--darken-1">Notifications</v-list-item-title>
+
                   <v-list-item-subtitle> {{ date }} </v-list-item-subtitle>
                 </v-list-item>
               </v-list>
@@ -283,7 +284,8 @@ export default {
     previewImage: '',
     email:'',
     date: Date.now(),
-    view: ''
+    view: '',
+    status: 'False'
   }),
   computed: {
     theme() {
@@ -398,24 +400,34 @@ export default {
     Firebase.auth().onAuthStateChanged(function(user){
         if (user){
           this.email = user.email
-            console.log(this.email)
-            db.collection("users").doc(this.email).get().then(snapshot => {
-              console.log(snapshot)
-                this.firstname = snapshot.data().firstname
-                this.surname = snapshot.data().surname
-                this.previewImage = snapshot.data().profilePic
-                    
-                })
-        } else {
-          // No user is signed in.
-        }
-        console.log(this.email)
-        console.log(this.firstname)
-        }.bind(this)
-        )
+          console.log(this.email)
+          db.collection("users").doc(this.email).get().then(snapshot => {
+            console.log(snapshot)
+            this.firstname = snapshot.data().firstname
+            this.surname = snapshot.data().surname
+            this.previewImage = snapshot.data().profilePic
+            this.status = snapshot.data().status          
+            console.log(this.firstname)
+            console.log(this.status)
+            if( this.status === 'True'){
+                console.log("admin logged in ")
+            }else{
+                console.log( this.status)
+              this.$router.push({name: 'Login'})
+            }
+              })
+          } else {
+            // No user is signed in.
+          }
+          console.log(this.email)
+          console.log(this.firstname)
+          }.bind(this)
+          )
     
     },
-  }
+
+  },
+   
 }
 </script>
 <style scoped>
