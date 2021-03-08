@@ -107,7 +107,7 @@
         color="grey lighten-1 shrink"
         size="32"
       >
-      <img src="https://cdn.vuetifyjs.com/images/parallax/material.jpg" :width="size" alt="">
+      <img :src= previewImage :width="size" alt="">
       
       </v-avatar>
 
@@ -129,20 +129,18 @@
                       background:linear-gradient(white, grey); 
                       border-radius:0 0 10px 10px;"
               top="0">
+              <v-img :src= coverPic width="1100px" height="380px" alt=""></v-img>
             <div class="dpupload"><a href="#" style="right:42%; z-index:1;  bottom:0px; margin-bottom:20px; position:absolute;">
                 <v-avatar
                 class="hidden-sm-and-down float-right ml-4"
                 color="#f0f2f5"
-                size="38  "
-            >
-        <v-icon color="black">
-            mdi-camera
-        
-        <a><input type="file" @change="previewImage" accept="image/*" ></a> </v-icon>
+                size="38"
+                back
+            >        
+        <input type="file" value="upload" title="Add Cover Image" class="btn btn-xs" placeholder="upload" @change="uploadProfileImage($event)" accept="image/*"  style="background:red;">
         </v-avatar>
         </a></div>
-                <div class="concomponent" bottom="0"><a rounded-pill  
-                        style="background:#f0f2f5; 
+            <input type="file" color="black"  style="background:#f0f2f5; 
                             right:0px; 
                             border-radius:8px; 
                             margin-bottom:20px; 
@@ -153,13 +151,7 @@
                             color:black; 
                             font-weight:bold; 
                             padding-left:5px;
-                ; absolute">
-                    <v-icon color="black"> 
-                    mdi-camera 
-                    </v-icon>
-                    Add cover Photo
-                    </a></div>
-                                                
+                ; absolute"  placeholder="Add cover Photo"  id="myFile" name="html" @change="uploadCoverImage($event)" accept="image/*" />              
 
             </v-sheet>
         
@@ -171,7 +163,7 @@
                 >
                 <v-img
                 :width="width"
-                src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+                :src= previewImage
                 ></v-img>
         
         
@@ -236,7 +228,7 @@
              </div>
         </div>
     </v-card>
-    <v-col v-for="post in posts" :key= "post">
+    <v-col v-for="post in posts" :key= "post" @change="getPost()">
     <v-card round max-width="500px" style="position:relative; left:800px; top:-80px;">
         <v-card-title> Posted by: {{ post.posts.user }} </v-card-title>
         <v-card-subtitle>posted at: {{ post.posts.timestamp }}</v-card-subtitle>
@@ -251,6 +243,27 @@
     </v-col>
     </v-app>
 </template>
+<style scoped>
+.custom-file-input::before {
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+input[type=file]{
+    width:130px;
+    color:transparent;
+    
+}
+</style>
 <script>
 import Firebase  from 'firebase/app'
 import 'firebase/storage'
@@ -279,14 +292,15 @@ require('firebase/database')
                 Liked: 'false',
                 comment: '',
                 comment_user: '',
-                comment_time: ''
+                comment_time: '',
+                coverPic: ''
              }
                 },
 
         mounted(){
             this.getPost()
             this.getUsers()
-            console.log(this)
+            console.log(this.previewImage)
         // console.debug('fetchUser return: ', this.users);
             // const profilePic = db.collection('users').doc(this.email).get()
 
@@ -319,11 +333,12 @@ require('firebase/database')
                 })
                 })
             })
-            
+            // location.reload()
             
             },
         
         uploadCoverImage(event){
+            console.log("cover image")
             const image = event.target.files[0];
             console.log(image)
             const reader = new FileReader();
@@ -344,14 +359,13 @@ require('firebase/database')
             // Get a reference to the storage service, which is used to create references in your storage bucket
             var uploadRef = Firebase.storage().ref()
             console.log(uploadRef)
-            uploadRef.child(this.email).put(cover).then(snapshot =>{
+            uploadRef.child('uploads').child(this.email).put(image).then(snapshot =>{
                 console.log(image)
             // Ge t a reference to storage holding the image
-            uploadRef.child(this.email).getDownloadURL().then( url => {
+            uploadRef.child('uploads').child(this.email).getDownloadURL().then( url => {
                     
                 console.log(url)
                 var coverPic = url
-                console.log(profilePic)
                 const user = db.collection("users").doc(this.email).update({
                     coverPic : coverPic
                 })
@@ -437,6 +451,7 @@ require('firebase/database')
                     this.firstname = snapshot.data().firstname
                     this.surname = snapshot.data().surname
                     this.previewImage = snapshot.data().profilePic
+                    this.coverPic = snapshot.data().coverPic
                         
                     })
             } else {
@@ -444,6 +459,8 @@ require('firebase/database')
             }
             console.log(this.email)
             console.log(this.firstname)
+            console.log(this.previewImage)
+            console.log(this.coverPic)
             }.bind(this)
             );
         
@@ -501,7 +518,8 @@ require('firebase/database')
         
         });
     } 
-        }
+        },
+
 } // missing closure added
 
 </script>
