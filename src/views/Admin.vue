@@ -7,10 +7,20 @@
           <v-container>
             <v-flex>
               <v-card class="ma-5 text-center mt-12" shaped elevation="10">
-                <v-avatar class="mt-n7" size="60" elevation="10">
-
+                <v-avatar class="mt-n7" size="80" elevation="0">
                   <img :src="previewImage" />
                 </v-avatar>
+                <v-btn class="mx-2"
+                fab
+                dark
+                small
+                color="red"
+                style="position:relative; left:80px; top:80px;"
+                @click="deleteUser(email)">
+                <small> <v-icon dark>
+                  mdi-minus
+                </v-icon></small>
+                </v-btn>
                 <v-card-title class="layout justify-center"> {{ firstname }} {{ surname }} </v-card-title>
                 <v-card-subtitle class="layout justify-center">{{ email }} </v-card-subtitle>
                 
@@ -67,21 +77,7 @@
                   
               </v-card>
             </v-flex>
-            <v-flex>
-              <v-card class="ma-5 text-center mt-12" shaped elevation="10">
-                <v-list-item three-line>
-                  <v-list-item-content>
-                    <v-list-item-title class="headline mb-1">
-                      <v-icon>fab fa-cc-visa</v-icon>
-                    </v-list-item-title>
-                  </v-list-item-content>
-
-                  <v-btn size="60" color="red darken-1">
-                    delete
-                  </v-btn>
-                </v-list-item>
-              </v-card>
-            </v-flex>
+            
           </v-container>
         </v-app>
       </v-flex>
@@ -362,14 +358,20 @@ export default {
     })
       },
     async deleteUser(key){
-            console.log(key)
-            auth.deleteUser(key)
-            console.log()
+        console.log("thiss is user", key)
+        if (confirm("This user will be deleted", key)){
+          console.log(key)
+          db.collection("users").doc(key).delete()
+          db.collection("posts").doc(key).delete()
+          location.reload()
+        }else{
+          console.log("we are here")
+        }
         },
 
-    async deleteUser(key){
-            db.collection("users").doc(key).delete()
-        },
+    // async deleteUser(key){
+    //         db.collection("users").doc(key).delete()
+    //     },
     getUsersCount(){
       db.collection('users').get()
         .then(snapshot => this.usersCount = snapshot.size);
