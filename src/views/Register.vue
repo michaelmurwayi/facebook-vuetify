@@ -107,7 +107,8 @@ export default {
           const users = db.collection("users").doc(this.email).set({
             firstname: this.firstname,
             surname: this.surname,
-            email: this.email,  
+            email: this.email,
+            status: 'False'  
                 })
           this.$router.replace({path:"/profile"})
         })
