@@ -91,33 +91,37 @@
         mdi-facebook-messenger
       </v-icon>
       </v-avatar>
-       <v-avatar
+      <div class="dropdown" style="margin:10px;">
+        <div class="dropdown-list">
+        <div class="dropdown-list__item"><a  @click.prevent="logOut">
+            <button>
+            <small>logout</small>
+            </button>
+            </a>
+            </div>
+      </div>
+       
+        </div>
+    
+      <div v-if="this.status == 'True'" style="margin:10px;">
+        <router-link to="/admin" >
+        <button>
+          <small> Admin</small>
+        </button>
+        </router-link>
+      </div>
+      
+      <div v-else>
+        <v-avatar
         class="hidden-sm-and-down float-right ml-4"
         color="#f0f2f5"
         size="32"
       >
+      </v-avatar>
       <v-icon color="black">
         mdi-bell
       </v-icon>
-      
-      </v-avatar>
-      <div class="dropdown" ><a href="#" class="">
-         <v-avatar
-        class="hidden-sm-and-down float-right ml-4"
-        color="grey lighten-1 shrink"
-        size="32"
-      >
-      <img :src= previewImage :width="size" alt="">
-      
-      </v-avatar>
-
-         </a> 
-          <div class="dropdown-list">
-        <div class="dropdown-list__item"><a  @click.prevent="logOut">logOut</a></div>
-      
       </div>
-       
-         </div>
         </v-app-bar>
         <v-card col="12" round style="height:500px; background-color:;">
               <v-col cols="12" sm="8">
@@ -293,13 +297,14 @@ require('firebase/database')
                 comment: '',
                 comment_user: '',
                 comment_time: '',
-                coverPic: ''
+                coverPic: '',
+                status: ''
              }
                 },
 
         mounted(){
             this.getPost()
-            this.getUsers()
+            this.getUser()
             console.log(this.previewImage)
         // console.debug('fetchUser return: ', this.users);
             // const profilePic = db.collection('users').doc(this.email).get()
@@ -440,7 +445,7 @@ require('firebase/database')
         console.debug('fetchUser return: ', this.posts);
         
 },
-    getUsers(){
+    getUser(){
         this.users = []
         Firebase.auth().onAuthStateChanged(function(user){
             if (user){
@@ -452,6 +457,7 @@ require('firebase/database')
                     this.surname = snapshot.data().surname
                     this.previewImage = snapshot.data().profilePic
                     this.coverPic = snapshot.data().coverPic
+                    this.status = snapshot.data().status
                         
                     })
             } else {
