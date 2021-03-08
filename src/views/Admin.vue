@@ -288,7 +288,8 @@ export default {
     previewImage: '',
     email:'',
     date: Date.now(),
-    view: ''
+    view: '',
+    status: 'False'
   }),
   computed: {
     theme() {
@@ -397,20 +398,22 @@ export default {
     Firebase.auth().onAuthStateChanged(function(user){
         if (user){
           this.email = user.email
-<<<<<<< HEAD
           console.log(this.email)
           db.collection("users").doc(this.email).get().then(snapshot => {
             console.log(snapshot)
-              this.firstname = snapshot.data().firstname
-              this.surname = snapshot.data().surname
-              this.previewImage = snapshot.data().profilePic
-              this.status = snapshot.data().status          
-              })
+            this.firstname = snapshot.data().firstname
+            this.surname = snapshot.data().surname
+            this.previewImage = snapshot.data().profilePic
+            this.status = snapshot.data().status          
+            console.log(this.firstname)
+            console.log(this.status)
             if( this.status === 'True'){
-              console.log("admin logged in ")
+                console.log("admin logged in ")
             }else{
+                console.log( this.status)
               this.$router.push({name: 'Login'})
             }
+              })
           } else {
             // No user is signed in.
           }
@@ -423,26 +426,6 @@ export default {
 
   },
    
-=======
-            console.log(this.email)
-            db.collection("users").doc(this.email).get().then(snapshot => {
-              console.log(snapshot)
-                this.firstname = snapshot.data().firstname
-                this.surname = snapshot.data().surname
-                this.previewImage = snapshot.data().profilePic
-                    
-                })
-        } else {
-          // No user is signed in.
-        }
-        console.log(this.email)
-        console.log(this.firstname)
-        }.bind(this)
-        )
-    
-    },
-  }
->>>>>>> ea7e71eca655f25a1f2bd07b53663c14c3dc2688
 }
 </script>
 <style scoped>
