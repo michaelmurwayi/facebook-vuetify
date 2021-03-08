@@ -397,6 +397,7 @@ export default {
     Firebase.auth().onAuthStateChanged(function(user){
         if (user){
           this.email = user.email
+<<<<<<< HEAD
           console.log(this.email)
           db.collection("users").doc(this.email).get().then(snapshot => {
             console.log(snapshot)
@@ -422,6 +423,26 @@ export default {
 
   },
    
+=======
+            console.log(this.email)
+            db.collection("users").doc(this.email).get().then(snapshot => {
+              console.log(snapshot)
+                this.firstname = snapshot.data().firstname
+                this.surname = snapshot.data().surname
+                this.previewImage = snapshot.data().profilePic
+                    
+                })
+        } else {
+          // No user is signed in.
+        }
+        console.log(this.email)
+        console.log(this.firstname)
+        }.bind(this)
+        )
+    
+    },
+  }
+>>>>>>> ea7e71eca655f25a1f2bd07b53663c14c3dc2688
 }
 </script>
 <style scoped>
