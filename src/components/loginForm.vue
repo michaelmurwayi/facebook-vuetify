@@ -10,7 +10,7 @@
         <p style="margin-left: 130px; top:100px;"> Forgotten Password?</p>
         <hr style="width:80%; margin-left:40px; opacity:0.8;">
         <v-card-action class="mx-auto" style="margin-top:200px; !important; border-radius; 10px 10px 10px 10px;">
-          <v-btn color="success" success style="margin-left: 120px; margin-top:20px; margin-bottom:10px;"><b>Create Account</b></v-btn>
+          <v-btn color="success" success style="margin-left: 120px; margin-top:20px; margin-bottom:10px;"><b><router-link to="/register" style="color:white;">Create Account</router-link></b></v-btn>
         </v-card-action>
   </v-card>   
 </template>
