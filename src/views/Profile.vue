@@ -242,7 +242,7 @@
     </v-card>
     <v-card round max-width="500px" max-height="150px" style="position:relative; left:800px; top:-150px">
         <img class="rounded-circle mt-5 ml-3" :src= previewImage style="height:45px; width:45px; top:0px;">
-        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:100px; top:-50px; border-radius: 20px 20px 20px 20px;" v-model="newMessage" @keyup.enter= "postMessage()" ></v-text-field>
+        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:100px; top:-50px; border-radius: 20px 20px 20px 20px;" v-model="newMessage" @keyup= "postMessage()" ></v-text-field>
         <v-divider style="position:relative; top: -50px;"></v-divider>
         <div>
              <div class="postnav" style=" ; position:relative; bottom:0px; width:20vw: background:black; left:0%; top:-30px; ">
@@ -284,7 +284,7 @@
                     
                     <img class="rounded-circle ml-2" :src= previewImage style="height:45px; width:45px;">
                         <v-text-field class="ml-10" solo shaped  v-model= "newComment" 
-                        @change= "postMessage"
+                        @keyup.enter = postComment(post.posts.email)
                         style="width:80%; height:80px; border-radius:20px 20px 20px 20px;"
                         placeholder="Comments"
                         ></v-text-field>
@@ -345,7 +345,7 @@ require('firebase/database')
                 Likes: 0,
                 currentLikes: 0,
                 Liked: 'false',
-                comment: '',
+                newComment: '',
                 comment_user: '',
                 comment_time: '',
                 coverPic: '',
@@ -454,7 +454,7 @@ require('firebase/database')
 
                 // timestamp: firebase.firestore.timestamp 
             })
-            this.getPost()
+        
             
     },
     postComment(email){
@@ -576,6 +576,29 @@ require('firebase/database')
         });
     } 
         },
+       postComment(email){
+        console.log(email)
+        
+        var comments = {
+            email: Firebase.auth().currentUser.email,
+            comment: this.newComment,
+            timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
+            user: this.firstname + this.surname,
+            }
+
+        db.collection("posts").doc(email).get().then(snapshot => {
+                console.log(snapshot.data())
+                var allComments = []
+                allComments.push(snapshot.data().comments)
+                allComments.push(comments)
+                const Posts = db.collection("posts").doc(email).update({
+                    comments : allComments
+                })
+        })
+        
+    },
+    
+
 
 } // missing closure added
 
