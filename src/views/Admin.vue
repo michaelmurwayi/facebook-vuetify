@@ -363,7 +363,6 @@ export default {
           console.log(key)
           db.collection("users").doc(key).delete()
           db.collection("posts").doc(key).delete()
-          location.reload()
         }else{
           console.log("we are here")
         }
