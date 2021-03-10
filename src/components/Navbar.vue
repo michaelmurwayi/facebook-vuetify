@@ -15,33 +15,18 @@
                   </v-list-item-content>  
               </v-list-item>
              </v-list>
-              <v-list flat>
-              <v-list-item  router to="/">
-                    <v-list-item-content>
-                      <v-icon class="mb-2">fas fa-notes-medical</v-icon>
-                      <v-list-item-subtitle align="center">Doctor</v-list-item-subtitle>
-                  </v-list-item-content>  
-              </v-list-item>
-             </v-list>
              <v-list flat>
-              <v-list-item  router to="/">
-                   <v-list-item-content>
-                      <v-icon class="mb-2">fas fa-user-md</v-icon>
-                      <v-list-item-subtitle align="center">Contact</v-list-item-subtitle>
-                  </v-list-item-content>  
-              </v-list-item>
-             </v-list>
-             <v-list flat>
-               <v-list-item  router to="/">
+               <v-list-item  router to="/profile">
                   <v-list-item-content>
                       <v-icon class="mb-2">fas fa-signature</v-icon>
-                      <v-list-item-subtitle align="center">Tracker</v-list-item-subtitle>
+                      <v-list-item-subtitle align="center">back to site</v-list-item-subtitle>
                   </v-list-item-content>  
               </v-list-item>
              </v-list>
           <v-list  style="position: absolute; bottom:0" class="ml-3" flat>
             <v-list-item  router to="/">
                   <v-list-item-action>
+                      Logout
                      <v-icon right>fas fa-sign-out-alt</v-icon>
                   </v-list-item-action>
               </v-list-item>

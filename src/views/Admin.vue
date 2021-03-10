@@ -189,7 +189,7 @@
                             Email
                           </th>
                           <th class="">
-                            Profile Pic
+                            TimeStamp
                           </th>
                           
                         </tr>
@@ -219,10 +219,10 @@
                       <thead>
                         <tr>
                           <th class="text-left">
-                            FirstName
+                            Username
                           </th>
                           <th class="text-left">
-                            Surname
+                            Post
                           </th>
                           <th class="text-left">
                             Email
@@ -237,13 +237,57 @@
                         <tr
                           v-for="post in userPosts"
                           :key="post"
-                        >
+                          style="text-align:left;"
+                        > 
+                          <!-- <td> {{ userPosts }} </td> -->
                           <td>{{ post.user }}</td>
                           <td>{{ post.message }}</td>
                           <td>{{ post.email }}</td>
                           <td>{{ post.timestamp }}</td>
                           <td><button style="border:none; background-color:red" class=" col-md-12   mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button></td>
                         </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+            
+                    </div>
+                    <div v-else-if= "view === 'Post'" style="text-align:center;">
+                    <v-divider></v-divider>
+                    <h2> Posts </h2>
+                    <v-divider></v-divider>
+                    <v-simple-table>
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">
+                            Username
+                          </th>
+                          <th class="text-left">
+                            Post
+                          </th>
+                          <th class="text-left">
+                            Email
+                          </th>
+                          <th class="">
+                            Profile Pic
+                          </th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody v-if= "userPosts.length > 0 ">
+                          
+                        <tr
+                          v-for="post in userPosts"
+                          :key="post"
+                          style="text-align:left;"
+                          > 
+                          <td>{{ post.user| }}</td>
+                          <td>{{ post.message }}</td>
+                          <td>{{ post.email }}</td>
+                          <td>{{ post.timestamp }}</td>
+                          <td><button style="border:none; background-color:red" class=" col-md-12   mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button></td>
+                        </tr>
+                        
                       </tbody>
                     </template>
                   </v-simple-table>
@@ -311,6 +355,19 @@ export default {
             align: 'start',
             sortable: false,
             value: 'Firstname',
+          },
+          { text: 'Surname', value: 'surname' },
+          { text: 'Email', value: 'email' },
+          { text: 'ProfilePic', value: 'profilePic' },
+          { text: 'CoverPic', value: 'coverPic' },
+          // { text: 'Iron (%)', value: 'iron' },
+        ],
+    postHeaders: [
+          {
+            text: 'Username',
+            align: 'start',
+            sortable: false,
+            value: 'username',
           },
           { text: 'Surname', value: 'surname' },
           { text: 'Email', value: 'email' },
@@ -418,14 +475,30 @@ export default {
   
   viewUser(email){
       alert(email)
-      console.log("we are here")
       db.collection("users").doc(email).get().then(snapshot => {
-          console.log("we are here " , snapshot)
             this.firstname = snapshot.data().firstname
             this.surname = snapshot.data().surname
             this.email = snapshot.data().email
             this.previewImage = snapshot.data().profilePic    
-            })   
+            })
+      this.viewUserPosts(email)
+    },
+    async viewUserPosts(email){
+      alert("user posts")
+      console.log(this.view)
+          this.userPosts = []
+          const usersRef = await db.collection("posts").doc(email).get().then(snapshot => {
+              this.view = "Post"
+              const post = snapshot.data()
+              console.log(post)
+              if (post !=  undefined ){
+                this.userPosts.push(post)                    
+                console.log(this.userPosts)
+
+              }else{
+                this.userPosts = []
+              }
+          })
     },
      
   getUser(){
