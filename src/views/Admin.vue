@@ -170,63 +170,83 @@
                   <h2> -- </h2>
                 </div>
                 </div>
-                <div v-if= "view  === 'Users'">
-                  <div v-for= "items in users" :key= items>
-                   <div class="col-md-12 mb-3 m-2 mt-5" id="">
-                        <div class="text-left row " style="margin-top:15px; margin-left:400px;">
-                        <h2> User </h2>
-                        </div>
-                        <hr style="border-top:2px dashed grey; margin-top:5px;">
-                        <div class="text-left row" style="margin-top:10px;">
-                        <p class="ml-4 mr-4"> <b> Firstname:</b></p>
-                        <p> {{items.user.firstname}} </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> Surname:</b></p>
-                        <p> {{  items.user.surname }}  </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> Email:</b></p>
-                        <p> {{ items.user.email }} </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> profile Pic:</b></p>
-                        <p> <small> {{ items.user.ProfilePic }} </small></p>
-                        </div>
-                        <div class="row mb-0 mt-0">
-                        <v-btn color="warning" @click= viewUser(items.user.email) >View User</v-btn>
-                      </div>
-
-                    </div>
+                <div v-if= "view  === 'Users'" style="text-align:center;">
+                  <v-divider></v-divider>
+                  <h2> Users </h2>
+                  <v-divider></v-divider>
+                  <v-simple-table >
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">
+                            FirstName
+                          </th>
+                          <th class="text-left">
+                            Surname
+                          </th>
+                          <th class="text-left">
+                            Email
+                          </th>
+                          <th class="">
+                            Profile Pic
+                          </th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="item in users"
+                          :key="item"
+                        >
+                          <td>{{ item.user.firstname }}</td>
+                          <td>{{ item.user.surname }}</td>
+                          <td>{{ item.user.email }}</td>
+                          <td>{{ item.user.ProfilePic }}</td>
+                          <td> <v-btn color="warning" @click="viewUser(item.user.email)"> View User</v-btn>  </td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
                   </div>
-                   </div>
-                  <div v-else-if= "view === 'Posts'">
-                    <div v-for="post in userPosts" :key="post">
-
-                     <div class="col-md-12 mb-3 m-2 mt-5" id="">
-                        <div class="text-left row " style="margin-top:15px; margin-left:400px;">
-                        <h2> Post </h2>
-                        </div>
-                        <hr style="border-top:2px dashed grey; margin-top:5px;">
-                        <div class="text-left row " style="margin-top:50px;">
-                        <p class="ml-4 mr-4"> <b> Posted By:</b></p>
-                        <p> {{ post.user }} </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> Message:</b></p>
-                        <p> {{ post.message }} </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> Email:</b></p>
-                        <p> {{ post.email  }} </p>
-                        </div>
-                        <div class="text-left row ">
-                        <p class="ml-4 mr-4"> <b> TimeStamp:</b></p>
-                        <p> <small> {{ post.timestamp }} </small></p>
-                        </div>
-                        <div class="row mb-0 mt-0">
-                        <button style="border:none; background-color:red" class=" col-md-1   mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button>
-                        </div>
+                  
+                  <div v-else-if= "view === 'Posts'" style="text-align:center;">
+                    <v-divider></v-divider>
+                    <h2> Posts </h2>
+                    <v-divider></v-divider>
+                    <v-simple-table>
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">
+                            FirstName
+                          </th>
+                          <th class="text-left">
+                            Surname
+                          </th>
+                          <th class="text-left">
+                            Email
+                          </th>
+                          <th class="">
+                            Profile Pic
+                          </th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="post in userPosts"
+                          :key="post"
+                        >
+                          <td>{{ post.user }}</td>
+                          <td>{{ post.message }}</td>
+                          <td>{{ post.email }}</td>
+                          <td>{{ post.timestamp }}</td>
+                          <td><button style="border:none; background-color:red" class=" col-md-12   mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)"> Delete </i></small></button></td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+            
                     </div>
                   </div>
                       
@@ -283,7 +303,20 @@ export default {
     previewImage: '',
     email:'',
     date: Date.now(),
-    view: ''
+    view: '',
+    headers: [
+          {
+            text: 'Firstname',
+            align: 'start',
+            sortable: false,
+            value: 'Firstname',
+          },
+          { text: 'Surname', value: 'surname' },
+          { text: 'Email', value: 'email' },
+          { text: 'ProfilePic', value: 'profilePic' },
+          { text: 'CoverPic', value: 'coverPic' },
+          // { text: 'Iron (%)', value: 'iron' },
+        ]
   }),
   computed: {
     theme() {
@@ -352,6 +385,7 @@ export default {
                   // user.id = doc.id
                   this.userPosts.push(user)                    
                 })
+              console.log(this.userPosts)
                           
     })
       },
@@ -383,6 +417,8 @@ export default {
     },
   
   viewUser(email){
+      alert(email)
+      console.log("we are here")
       db.collection("users").doc(email).get().then(snapshot => {
           console.log("we are here " , snapshot)
             this.firstname = snapshot.data().firstname
@@ -409,8 +445,6 @@ export default {
         } else {
           // No user is signed in.
         }
-        console.log(this.email)
-        console.log(this.firstname)
         }.bind(this)
         )
     
