@@ -4,16 +4,16 @@
       color="primary"
     >
       
-      <v-toolbar-title>facebook</v-toolbar-title>
+      <v-toolbar-title style="color:white">facebook</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-form style="display:flex; positon:absolute; top:150;">
-        <v-text-field  v-model="email" placeholder="Email/PhoneNumber" solo height="10px"></v-text-field>
-        <v-text-field  v-model="password" placeholder="Password" type="password" solo></v-text-field>
+        <v-text-field  v-model="email" placeholder="Email/PhoneNumber" solo dense style="position:relative; top:20px; right:20px; width:80%; height:80px"></v-text-field>
+        <v-text-field  v-model="password" placeholder="Password" type="password" dense solo  style="position:relative; top:20px; right:10px; width:80%;"></v-text-field>
       </v-form>
-      <v-btn color="info" small @click="pressed"><b>Login</b></v-btn>
+      <v-btn color="info" small dense @click="pressed"><b>Login</b></v-btn>
     </v-toolbar>
-    <v-form max-width="400px" style="width:400px; position:absolute; left:35%;">
+    <v-form max-width="400px" style="width:400px; position:absolute; top: 140px; left:35%;">
 
       <v-card-title><h2>Create A New Account</h2></v-card-title>
       <v-card-subtitle><p>It's Simple and Quick</p></v-card-subtitle>
@@ -27,6 +27,7 @@
             placeholder="First name"
             required
             solo
+            class="mt-0"
           ></v-text-field>
         </v-col>
 
@@ -51,6 +52,7 @@
             placeholder="Email or Phonenumber"
             solo
             required
+            style="position:relative; top: -5px; right: 5px;"
           ></v-text-field>
         </v-col>
         <v-col
@@ -63,6 +65,7 @@
             type="password"
             solo
             required
+            style="position:relative; top: -5px; right: 5px;"
           ></v-text-field>
           <v-card-subtitle><p>By clicking Sign Up, you agree to our Terms, Data Policy and Cookie Policy.You may recieve SMS notifications from us and can opt out at any time</p></v-card-subtitle>
         </v-col>
@@ -70,6 +73,9 @@
           <v-btn color="success" success style="margin-left: 20px; margin-top:0px; margin-bottom:10px;" @click="pressed"><b>Sign Up</b></v-btn>
         </v-card-action>
     </v-form>
+    <div style="position:absolute; top:720px">
+    <Footer/>
+    </div>
     </div>
 </template>
 <style scoped>
@@ -85,8 +91,12 @@ import {firebase} from '@firebase/app'
 import userCollection from '../firebase'
 import Firebase from '../firebase'
 import { db } from '../firebase'
+import Footer from '../components/footer'
 
 export default {
+  components:{
+    Footer
+  },
   data() {
     return {
       firstname:"",
@@ -107,7 +117,8 @@ export default {
           const users = db.collection("users").doc(this.email).set({
             firstname: this.firstname,
             surname: this.surname,
-            email: this.email,  
+            email: this.email,
+            status: 'False'  
                 })
           this.$router.replace({path:"/profile"})
         })

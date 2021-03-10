@@ -26,7 +26,10 @@ export default new Vuex.Store({
             const userProfile = await firebase.usersCollection.doc(user.uid).get()
 
             commit('setUserProfile', userProfile.data())
-            // router.push({path:'account'})
-        }
-    }
-  })
+
+            router.push({path:'dashboard'})
+        },
+
+    },
+    
+})

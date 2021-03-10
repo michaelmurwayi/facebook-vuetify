@@ -30,6 +30,7 @@
               <v-list color="transparent" class="text-center">
                 <v-list-item>
                   <v-list-item-title class="cyan--text text--darken-1">Notifications</v-list-item-title>
+
                   <v-list-item-subtitle> {{ date }} </v-list-item-subtitle>
                 </v-list-item>
               </v-list>
@@ -395,7 +396,6 @@ export default {
           console.log(key)
           db.collection("users").doc(key).delete()
           db.collection("posts").doc(key).delete()
-          location.reload()
         }else{
           console.log("we are here")
         }
@@ -449,7 +449,9 @@ export default {
         )
     
     },
-  }
+
+  },
+   
 }
 </script>
 <style scoped>

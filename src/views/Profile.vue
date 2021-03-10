@@ -91,33 +91,37 @@
         mdi-facebook-messenger
       </v-icon>
       </v-avatar>
-       <v-avatar
+      <div class="dropdown" style="margin:10px;">
+        <div class="dropdown-list">
+        <div class="dropdown-list__item"><a  @click.prevent="logOut">
+            <button>
+            <small>logout</small>
+            </button>
+            </a>
+            </div>
+      </div>
+       
+        </div>
+    
+      <div v-if="this.status == 'True'" style="margin:10px;">
+        <router-link to="/admin">
+        <button>
+          <small> Admin</small>
+        </button>
+        </router-link>
+      </div>
+      
+      <div v-else>
+        <v-avatar
         class="hidden-sm-and-down float-right ml-4"
         color="#f0f2f5"
         size="32"
       >
+      </v-avatar>
       <v-icon color="black">
         mdi-bell
       </v-icon>
-      
-      </v-avatar>
-      <div class="dropdown" ><a href="#" class="">
-         <v-avatar
-        class="hidden-sm-and-down float-right ml-4"
-        color="grey lighten-1 shrink"
-        size="32"
-      >
-      <img src="https://cdn.vuetifyjs.com/images/parallax/material.jpg" :width="size" alt="">
-      
-      </v-avatar>
-
-         </a> 
-          <div class="dropdown-list">
-        <div class="dropdown-list__item"><a  @click.prevent="logOut">logOut</a></div>
-      
       </div>
-       
-         </div>
         </v-app-bar>
         <v-card col="12" round style="height:500px; background-color:;">
               <v-col cols="12" sm="8">
@@ -129,21 +133,21 @@
                       background:linear-gradient(white, grey); 
                       border-radius:0 0 10px 10px;"
               top="0">
+              <v-img :src= coverPic width="1100px" height="380px" alt=""></v-img>
             <div class="dpupload"><a href="#" style="right:42%; z-index:1;  bottom:0px; margin-bottom:20px; position:absolute;">
                 <v-avatar
                 class="hidden-sm-and-down float-right ml-4"
                 color="#f0f2f5"
-                size="38  "
-            >
-        <v-icon color="black">
-            mdi-camera
-        
-        <a><input type="file" @change="previewImage" accept="image/*" ></a> </v-icon>
-        </v-avatar>
-        </a></div>
-                <div class="concomponent" bottom="0"><a rounded-pill  
-                        style="background:#f0f2f5; 
+                size="38"
+                back
+            > 
+        <label style="background:#f0f2f5; 
                             right:0px; 
+                            border:none;
+                            content: 'Add cover image'
+                            display: block;
+                            width: 200px;
+                            height: 50px;
                             border-radius:8px; 
                             margin-bottom:20px; 
                             margin-right:20px; 
@@ -151,27 +155,41 @@
                             position:absolute; 
                             text-decoration:none; 
                             color:black; 
-                            font-weight:bold; 
-                            padding-left:5px;
-                ; absolute">
-                    <v-icon color="black"> 
-                    mdi-camera 
-                    </v-icon>
-                    Add cover Photo
-                    </a></div>
-                                                
-
+                            font-weight:bold;  
+                            absolute">
+        <input type="file" value="upload" title="Add Cover Image" class="btn btn-xs" placeholder="upload" @change="uploadProfileImage($event)" accept="image/*"  style="background:red;">
+        </label>       
+        </v-avatar>
+        </a></div>
+            <label upload image placeholder="Add cover image" style="background:#f0f2f5; 
+                            right:0px; 
+                            border:none;
+                            content: 'Add cover image'
+                            display: block;
+                            width: 200px;
+                            height: 50px;
+                            border-radius:8px; 
+                            margin-bottom:20px; 
+                            margin-right:20px; 
+                            padding:5px; bottom:0; 
+                            position:absolute; 
+                            text-decoration:none; 
+                            color:black; 
+                            font-weight:bold;  
+                            absolute">
+            <input type="file" color="black"  id="myFile"  @change="uploadCoverImage($event)" accept="image/*" hidden/>              
+            </label>
             </v-sheet>
         
             <v-avatar
                 class="mt-n20 ml-6"
                 size="158"
                 color="white"
-                style="border:5px solid #000; bottom:175px; z-index:-0; position:absolute; left:42%; top:220px; "
+                style="border:5px solid #000; bottom:175px; z-index:-0; position:absolute; left:42%; top:250px; "
                 >
                 <v-img
                 :width="width"
-                src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+                :src= previewImage
                 ></v-img>
         
         
@@ -210,7 +228,7 @@
         >Edit Details</v-btn>
     </v-card>
     <v-card round max-width="500px" style="position:relative; left:800px; top:-120px">
-        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:90px; top:10px;" @keypress.enter= postMessage() ></v-text-field>
+        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:90px; top:10px;" v-model="newMessage" @keyup.enter= "postMessage()" ></v-text-field>
         <v-divider style="position:relative; top:0px;"></v-divider>
         <div>
              <div class="postnav" style=" padding:10px; position:relative; bottom:0px; width:20vw: background:black; left:0%; top:0px; ">
@@ -236,7 +254,7 @@
              </div>
         </div>
     </v-card>
-    <v-col v-for="post in posts" :key= "post">
+    <v-col v-for="post in posts" :key= "post" @change="getPost()">
     <v-card round max-width="500px" style="position:relative; left:800px; top:-80px;">
         <v-card-title> Posted by: {{ post.posts.user }} </v-card-title>
         <v-card-subtitle>posted at: {{ post.posts.timestamp }}</v-card-subtitle>
@@ -251,25 +269,48 @@
     </v-col>
     </v-app>
 </template>
+<style scoped>
+.custom-file-input::before {
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+input[type=file]{
+    width:130px;
+    color:transparent;
+    
+}
+</style>
 <script>
 import Firebase  from 'firebase/app'
 import 'firebase/storage'
 import { db } from '../firebase'
 require('firebase/auth')
 require('firebase/database')
-import postsCollection from '../firebase'
+
 
     export default {
         data(){
             return{
+                width: '10',
+                size: '',
                 posts:[],
                 user: 'Users',
-                firstname:'Mikes',
+                firstname:'',
                 surname: '',
                 previewImage:"",
                 newMessage:'',
                 time: '',
-                email:Firebase.auth().currentUser,
+                email:'',
                 post: '',
                 // userId: Firebase.auth().currentUser.uid,
                 Likes: 0,
@@ -277,14 +318,16 @@ import postsCollection from '../firebase'
                 Liked: 'false',
                 comment: '',
                 comment_user: '',
-                comment_time: ''
+                comment_time: '',
+                coverPic: '',
+                status: ''
              }
                 },
 
         mounted(){
-            console.log(Firebase.auth().currentUser)
             this.getPost()
-            this.getUsers()
+            this.getUser()
+            console.log(this.previewImage)
         // console.debug('fetchUser return: ', this.users);
             // const profilePic = db.collection('users').doc(this.email).get()
 
@@ -317,11 +360,12 @@ import postsCollection from '../firebase'
                 })
                 })
             })
-            
+            // location.reload()
             
             },
         
         uploadCoverImage(event){
+            console.log("cover image")
             const image = event.target.files[0];
             console.log(image)
             const reader = new FileReader();
@@ -342,14 +386,13 @@ import postsCollection from '../firebase'
             // Get a reference to the storage service, which is used to create references in your storage bucket
             var uploadRef = Firebase.storage().ref()
             console.log(uploadRef)
-            uploadRef.child(this.email).put(cover).then(snapshot =>{
+            uploadRef.child('uploads').child(this.email).put(image).then(snapshot =>{
                 console.log(image)
             // Ge t a reference to storage holding the image
-            uploadRef.child(this.email).getDownloadURL().then( url => {
+            uploadRef.child('uploads').child(this.email).getDownloadURL().then( url => {
                     
                 console.log(url)
                 var coverPic = url
-                console.log(profilePic)
                 const user = db.collection("users").doc(this.email).update({
                     coverPic : coverPic
                 })
@@ -374,7 +417,7 @@ import postsCollection from '../firebase'
             const HourComplete = Hours + ':' + Minutes
             let formatedTime = HourComplete
             const posts = db.collection("posts").doc(this.email).set({
-                email: Firebase.auth().currentUser.email,
+                email: this.email,
                 message: this.newMessage,
                 timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
                 user: this.firstname + this.surname,
@@ -382,20 +425,21 @@ import postsCollection from '../firebase'
 
                 // timestamp: firebase.firestore.timestamp 
             })
+            this.getPost()
             
     },
     postComment(email){
         console.log(email)
         
         var comments = {
-            email: Firebase.auth().currentUser.email,
+            email: this.email,
             comment: this.newComment,
             timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
             user: this.firstname + this.surname,
             }
 
         db.collection("posts").doc(email).get().then(snapshot => {
-                console.log(snapshot.data())
+            console.log(snapshot.data())
                 var allComments = []
                 allComments.push(snapshot.data().comments)
                 allComments.push(comments)
@@ -406,16 +450,16 @@ import postsCollection from '../firebase'
         
     },
     
-    async getPost(){
+    getPost(){
         this.posts = []
         console.log("we are getting posts")
-        const usersRef = await db.collection("posts").get().then(snapshot => {
+        const Posts = db.collection("posts").get().then(snapshot => {
             snapshot.forEach(doc => {
                 const posts = doc.data()
                 // user.id = doc.id
                 this.posts.push({ posts })
             })
-        console.log(usersRef)
+        console.log(Posts)
         })
         .catch(error => {
             console.error(error)
@@ -423,15 +467,31 @@ import postsCollection from '../firebase'
         console.debug('fetchUser return: ', this.posts);
         
 },
-    async getUsers(){
+    getUser(){
         this.users = []
-        db.collection("users").doc(this.email).get().then(snapshot => {
-            this.firstname = snapshot.data().firstname
-            this.surname = snapshot.data().surname
-            this.previewImage = snapshot.data().profilePic
-            
-        })
-
+        Firebase.auth().onAuthStateChanged(function(user){
+            if (user){
+                this.email = user.email
+                console.log(this.email)
+                db.collection("users").doc(this.email).get().then(snapshot => {
+                    console.log(snapshot)
+                    this.firstname = snapshot.data().firstname
+                    this.surname = snapshot.data().surname
+                    this.previewImage = snapshot.data().profilePic
+                    this.coverPic = snapshot.data().coverPic
+                    this.status = snapshot.data().status
+                        
+                    })
+            } else {
+                // No user is signed in.
+            }
+            console.log(this.email)
+            console.log(this.firstname)
+            console.log(this.previewImage)
+            console.log(this.coverPic)
+            }.bind(this)
+            );
+        
 },
    addLike (email) {
     if( this.Liked == 'false'){
@@ -486,7 +546,8 @@ import postsCollection from '../firebase'
         
         });
     } 
-        }
+        },
+
 } // missing closure added
 
 </script>
