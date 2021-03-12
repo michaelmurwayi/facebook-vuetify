@@ -1,6 +1,6 @@
 <template>
     <v-app  style="background-color:#f0f2f5;">
-    <v-col style="width:2000px; position:relative; top:-11px; right:-20px; left:-10px;" md="12">
+    <!-- <v-col style="width:150%; position:relative; top:-15px; right: 40px; left: 0px; background-color:red;" md="25" > -->
     <v-app-bar
       app
       color="white"
@@ -20,16 +20,14 @@
       </v-avatar> 
       <v-responsive max-width="260" max-height="60" class="ml-12 " > 
           <v-text-field
-            
             dense
-            style="color:black;"
+            style="color:black; border-radius: 10px 10px 10px 10px;"
             flat
             hide-details
             rounded
             append-icon="mdi-magnify left"
             background-color="#f0f2f5"
             solo
-           
             color="#000"
             placeholder="Search Facebook"
           > </v-text-field>
@@ -123,22 +121,22 @@
       </v-icon>
       </div>
         </v-app-bar>
-        <v-card col="12" round style="height:500px; background-color:;">
-              <v-col cols="12" sm="8">
+        
+        <v-card col="12" round style="height:550px; background-color:;">
+              <v-col cols="12" md="10" >
               <v-sheet class="mt-0"
               min-height="350"
-              color="grey"
-              style=" left:25%; 
+              style=" left:10%; 
                       position:relative; 
                       background:linear-gradient(white, grey); 
                       border-radius:0 0 10px 10px;"
-              top="0">
-              <v-img :src= coverPic width="1100px" height="380px" alt=""></v-img>
-            <div class="dpupload"><a href="#" style="right:42%; z-index:1;  bottom:0px; margin-bottom:20px; position:absolute;">
+              >
+              <v-img  :src= coverPic width="cover" height="380px" alt=""></v-img>
+            <div class="dpupload"><a href="#" style="right:44%; z-index:1;  bottom:0px; margin-bottom:20px; position:absolute;">
                 <v-avatar
                 class="hidden-sm-and-down float-right ml-4"
                 color="#f0f2f5"
-                size="38"
+                size="40"
                 back
             > 
         <label style="background:#f0f2f5; 
@@ -146,7 +144,7 @@
                             border:none;
                             content: 'Add cover image'
                             display: block;
-                            width: 200px;
+                            width: 800px;
                             height: 50px;
                             border-radius:8px; 
                             margin-bottom:20px; 
@@ -157,7 +155,7 @@
                             color:black; 
                             font-weight:bold;  
                             absolute">
-        <input type="file" value="upload" title="Add Cover Image" class="btn btn-xs" placeholder="upload" @change="uploadProfileImage($event)" accept="image/*"  style="background:red;">
+        <input type="file" value="upload" title="Add Cover Image"  placeholder="upload" @change="uploadProfileImage($event)" accept="image/*">
         </label>       
         </v-avatar>
         </a></div>
@@ -195,43 +193,59 @@
         
                 
             </v-avatar>
-            <div style="position:relative; left:65%;">
+            <div style="position:relative; left:53%;">
 
             <v-card-title> {{ firstname}} {{ surname }} </v-card-title>
             <v-card-subtitle> Add Bio </v-card-subtitle>
             </div>
               </v-col>
-        <v-divider style="postion:absolute;" inset md="6" cols="12"></v-divider>
+        <v-divider style="postion:relative;" inset md="12" ></v-divider>
+        
+        <div class="row col-md-8  ml-5 mt-5" style="background-color:Transparent; position:relative; left:120px">
+                <div class="row" >
+                <ul class="row" style="list-style-type:none;">
+                <li class="mr-5">Post</li>
+                <li class="mr-5">About</li>
+                <li class="mr-5">Friends</li>
+                <li class="mr-5">Photos</li>
+                </ul>
+                </div>
+        </div>
         </v-card>
-    </v-col>
-    <v-card round max-width="500px" style="position:relative; left:150px;">
+    <!-- </v-col> -->
+   
+    <v-card round max-width="500px" style="position:relative; top:70px; left:280px;">
         <v-card-title>Intro</v-card-title>
-        <v-btn
-        block
-        dark
-        elevation="2"
-        height="20"
-        md3
-        style="position:relative; left:0px;"
-        >Edit Details</v-btn>
-        <v-btn
-        block
-        elevation="2"
-        height="20"
-        style="position:relative; left:0px;"
-        >Edit Details</v-btn>
-        <v-btn
-        block
-        elevation="2"
-        height="20"
-        style="position:relative; left:0px;"
-        >Edit Details</v-btn>
+        <v-list>
+      <v-list-item-group style="text-align:center !important;">
+        <v-list-item 
+        >
+        <p style="margin-left:35%">
+
+         Edit Details
+        </p>
+        </v-list-item>
+        <v-list-item
+        >
+        <p style="margin-left:35%">
+         Add Hobbies
+        </p>
+        </v-list-item>
+         <v-list-item 
+        >
+        <p style=" margin-left:35%">
+         Edit Featured
+        </p>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
     </v-card>
-    <v-card round max-width="500px" style="position:relative; left:800px; top:-120px">
-        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:90px; top:10px;" v-model="newMessage" @keyup.enter= "postMessage()" ></v-text-field>
-        <v-divider style="position:relative; top:0px;"></v-divider>
+    <v-card round max-width="500px" max-height="150px" style="position:relative; left:800px; top:-150px">
+        <img class="rounded-circle mt-5 ml-3" :src= previewImage style="height:45px; width:45px; top:0px;">
+        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:100px; top:-50px; border-radius: 20px 20px 20px 20px;" v-model="newMessage" @keypress.enter = postMessage(email) ></v-text-field>
+        <v-divider style="position:relative; top: -50px;"></v-divider>
         <div>
-             <div class="postnav" style=" padding:10px; position:relative; bottom:0px; width:20vw: background:black; left:0%; top:0px; ">
+             <div class="postnav" style=" ; position:relative; bottom:0px; width:20vw: background:black; left:0%; top:-30px; ">
                <div class="postnavicon"><a style="position:absolute; left:10%; text-decoration:none;" href="">
                  <v-icon color="pink">
                  mdi-video
@@ -254,17 +268,33 @@
              </div>
         </div>
     </v-card>
-    <v-col v-for="post in posts" :key= "post" @change="getPost()">
+    <v-col v-for="post in posts" :key= "post" @change="">
     <v-card round max-width="500px" style="position:relative; left:800px; top:-80px;">
-        <v-card-title> Posted by: {{ post.posts.user }} </v-card-title>
-        <v-card-subtitle>posted at: {{ post.posts.timestamp }}</v-card-subtitle>
+        <v-card-title> {{ post.posts.user }} </v-card-title>
+        <v-card-subtitle> {{ post.posts.timestamp }}</v-card-subtitle>
         <p style="margin-left:120px;"> {{ post.posts.message }} </p>
         <v-divider></v-divider>
         <div class="row mb-0 mt-0">
-            <button style="border:none; background-color:Transparent" class=" col-md-4  ml-0 mr-0"><small><i class="far fa-thumbs-up fa-lg" @click="addLike(post.posts.email).disable=true" >Like ({{ post.posts.Likes }}) </i></small></button>
-            <button style="border:none; background-color:Transparent" class=" col-md-4  mr-0"><small><i class="far fa-comment fa-lg">Comment</i></small></button>
-            <button style="border:none; background-color:Transparent" class=" col-md-4 mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)" >View Full Post</i></small></button>
+            <button style="border:none; background-color:Transparent" class=" col-md-4  ml-0 mr-0"><small><i class="far fa-thumbs-up fa-md" @click="addLike(post.posts.email).disable=true" style=""> Like ({{ post.posts.Likes }}) </i></small></button>
+            <button style="border:none; background-color:Transparent" class=" col-md-4  mr-0"><small><i class="far fa-comment fa-md">Comment</i></small></button>
+            <button style="border:none; background-color:Transparent" class=" col-md-4 mr-0"><small><i class="fas fa-share fa-md" @click="viewFullPost(post.posts.email)" >View Full Post</i></small></button>
         </div>
+        <v-divider></v-divider>
+        <div :id="'commentsList' + post.posts.email" class="text-left" style="width:100%; text-align:left;"></div>
+        
+        <div class=" row col-md-12 mt-4">
+                    
+                    <img class="rounded-circle ml-2" :src= previewImage style="height:45px; width:45px;">
+                        <v-text-field class="ml-10" solo shaped  v-model= "newComment" 
+                        @keyup.enter = postComment(post.posts.email)
+                        style="width:80%; height:80px; border-radius:20px 20px 20px 20px;"
+                        placeholder="Comments"
+                        ></v-text-field>
+                        <v-input ></v-input>
+
+                    </div>
+                </div>
+
     </v-card>
     </v-col>
     </v-app>
@@ -289,6 +319,7 @@ input[type=file]{
     color:transparent;
     
 }
+
 </style>
 <script>
 import Firebase  from 'firebase/app'
@@ -307,7 +338,7 @@ require('firebase/database')
                 user: 'Users',
                 firstname:'',
                 surname: '',
-                previewImage:"",
+                previewImage:"https://mpng.subpng.com/20180622/uz/kisspng-facebook-inc-social-media-computer-icons-social-share-facebook-5b2d58d7da0246.193322341529698519893.jpg",
                 newMessage:'',
                 time: '',
                 email:'',
@@ -316,7 +347,7 @@ require('firebase/database')
                 Likes: 0,
                 currentLikes: 0,
                 Liked: 'false',
-                comment: '',
+                newComment: '',
                 comment_user: '',
                 comment_time: '',
                 coverPic: '',
@@ -410,6 +441,7 @@ require('firebase/database')
         })
     },
         postMessage(){
+            alert("Post sent")
             let timestamp = Date.now();
             let newDate = new Date(timestamp * 1000)
             let Hours = newDate.getHours()
@@ -422,30 +454,32 @@ require('firebase/database')
                 timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
                 user: this.firstname + this.surname,
                 Likes: this.Likes,
+                comments: []
 
                 // timestamp: firebase.firestore.timestamp 
             })
-            this.getPost()
+        
             
     },
     postComment(email){
         console.log(email)
-        
+        alert("comments")
         var comments = {
             email: this.email,
             comment: this.newComment,
             timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
             user: this.firstname + this.surname,
             }
-
+        console.log(comments)
         db.collection("posts").doc(email).get().then(snapshot => {
-            console.log(snapshot.data())
-                var allComments = []
-                allComments.push(snapshot.data().comments)
-                allComments.push(comments)
-                const Posts = db.collection("posts").doc(email).update({
-                    comments : allComments
-                })
+            console.log(" this is it",snapshot.data())
+            var allComments = snapshot.data().comments
+            console.log(allComments)
+            allComments.push(comments)
+            console.log(allComments)
+            const Posts = db.collection("posts").doc(email).update({
+                comments : allComments
+            })
         })
         
     },
@@ -517,7 +551,7 @@ require('firebase/database')
         const snapshot = db.collection('posts') 
         snapshot.doc(email).
             onSnapshot(function(doc){
-                if(  document.getElementById("commentsList").innerHTML == '' ){
+                if(document.getElementById("commentsList" + email ).innerHTML == '' ){
 
                     var data = doc.data().comments 
                     for( var i=0; i < data.length; i++ ){
@@ -525,19 +559,17 @@ require('firebase/database')
                         this.comment_user =  data[i].user;   
                         this.comment_time = data[i].email;
                         console.log(this.comment)
-                        document.getElementById("commentsList").innerHTML += ` <div class="col-md-12 mb-3 m-2" id="" >
-                                <div class="text-left row ">
-                                <p> commented By </p>
+                        document.getElementById("commentsList" + email ).innerHTML += ` <div class="col-md-12" style=" background-color:#F0F8FF; position:relative; top:0px; text-align:left; width:50%; display:inline-block; border: 0px solid; border-radius:40px 40px 40px 40px" >
+                                <div class="text-left">
                                 </div>
-                                <div class="text-left row ">
-                                <p class="ml-4 mr-4"><b> ${this.comment_user} :</b></p>
-                                <p> ${this.comment} </p>
+                                <div class="text-left ">
+                                <ul style="list-style-type:none;">
+                                <li class="ml-4 mr-4"><b><small> ${this.comment_user}</small></b></li>
+                                <li class="ml-4 mr-4 mt-0"><small  style="position:relatice; top:40px;"> ${this.comment} </small></li>
+                                </ul>
                                 </div>
                                 <div class="row mb-0 mt-0">
-                                <button style="border:none; background-color:Transparent" class=" col-md-4  ml-0 mr-0"><small><i class="far fa-thumbs-up fa-lg" >Like</i></small></button>
-                                <button style="border:none; background-color:Transparent" class=" col-md-4 mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)" >Share</i></small></button>
                                 </div>
-                                <hr>
                                 `
                     }
                 }else{
@@ -547,6 +579,7 @@ require('firebase/database')
         });
     } 
         },
+    
 
 } // missing closure added
 
