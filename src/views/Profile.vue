@@ -280,6 +280,8 @@
             <button style="border:none; background-color:Transparent" class=" col-md-4 mr-0"><small><i class="fas fa-share fa-md" @click="viewFullPost(post.posts.email)" >View Full Post</i></small></button>
         </div>
         <v-divider></v-divider>
+        <div :id="'commentsList' + post.posts.email" class="text-left" style="width:100%; text-align:left;"></div>
+        
         <div class=" row col-md-12 mt-4">
                     
                     <img class="rounded-circle ml-2" :src= previewImage style="height:45px; width:45px;">
@@ -336,7 +338,7 @@ require('firebase/database')
                 user: 'Users',
                 firstname:'',
                 surname: '',
-                previewImage:"",
+                previewImage:"https://mpng.subpng.com/20180622/uz/kisspng-facebook-inc-social-media-computer-icons-social-share-facebook-5b2d58d7da0246.193322341529698519893.jpg",
                 newMessage:'',
                 time: '',
                 email:'',
@@ -452,7 +454,7 @@ require('firebase/database')
                 timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
                 user: this.firstname + this.surname,
                 Likes: this.Likes,
-                comments: ""
+                comments: []
 
                 // timestamp: firebase.firestore.timestamp 
             })
@@ -549,7 +551,7 @@ require('firebase/database')
         const snapshot = db.collection('posts') 
         snapshot.doc(email).
             onSnapshot(function(doc){
-                if(  document.getElementById("commentsList").innerHTML == '' ){
+                if(document.getElementById("commentsList" + email ).innerHTML == '' ){
 
                     var data = doc.data().comments 
                     for( var i=0; i < data.length; i++ ){
@@ -557,19 +559,17 @@ require('firebase/database')
                         this.comment_user =  data[i].user;   
                         this.comment_time = data[i].email;
                         console.log(this.comment)
-                        document.getElementById("commentsList").innerHTML += ` <div class="col-md-12 mb-3 m-2" id="" >
-                                <div class="text-left row ">
-                                <p> commented By </p>
+                        document.getElementById("commentsList" + email ).innerHTML += ` <div class="col-md-12" style=" background-color:#F0F8FF; position:relative; top:0px; text-align:left; width:50%; display:inline-block; border: 0px solid; border-radius:40px 40px 40px 40px" >
+                                <div class="text-left">
                                 </div>
-                                <div class="text-left row ">
-                                <p class="ml-4 mr-4"><b> ${this.comment_user} :</b></p>
-                                <p> ${this.comment} </p>
+                                <div class="text-left ">
+                                <ul style="list-style-type:none;">
+                                <li class="ml-4 mr-4"><b><small> ${this.comment_user}</small></b></li>
+                                <li class="ml-4 mr-4 mt-0"><small  style="position:relatice; top:40px;"> ${this.comment} </small></li>
+                                </ul>
                                 </div>
                                 <div class="row mb-0 mt-0">
-                                <button style="border:none; background-color:Transparent" class=" col-md-4  ml-0 mr-0"><small><i class="far fa-thumbs-up fa-lg" >Like</i></small></button>
-                                <button style="border:none; background-color:Transparent" class=" col-md-4 mr-0"><small><i class="fas fa-share fa-lg" @click="viewFullPost(post.posts.email)" >Share</i></small></button>
                                 </div>
-                                <hr>
                                 `
                     }
                 }else{
