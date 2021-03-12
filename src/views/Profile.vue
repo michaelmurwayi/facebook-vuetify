@@ -242,7 +242,7 @@
     </v-card>
     <v-card round max-width="500px" max-height="150px" style="position:relative; left:800px; top:-150px">
         <img class="rounded-circle mt-5 ml-3" :src= previewImage style="height:45px; width:45px; top:0px;">
-        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:100px; top:-50px; border-radius: 20px 20px 20px 20px;" v-model="newMessage" @keyup= "postMessage()" ></v-text-field>
+        <v-text-field placeholder="What's on your Mind" solo style="width:80%; position:relative; left:100px; top:-50px; border-radius: 20px 20px 20px 20px;" v-model="newMessage" @keypress.enter = postMessage(email) ></v-text-field>
         <v-divider style="position:relative; top: -50px;"></v-divider>
         <div>
              <div class="postnav" style=" ; position:relative; bottom:0px; width:20vw: background:black; left:0%; top:-30px; ">
@@ -268,7 +268,7 @@
              </div>
         </div>
     </v-card>
-    <v-col v-for="post in posts" :key= "post" @change="getPost()">
+    <v-col v-for="post in posts" :key= "post" @change="">
     <v-card round max-width="500px" style="position:relative; left:800px; top:-80px;">
         <v-card-title> {{ post.posts.user }} </v-card-title>
         <v-card-subtitle> {{ post.posts.timestamp }}</v-card-subtitle>
@@ -439,6 +439,7 @@ require('firebase/database')
         })
     },
         postMessage(){
+            alert("Post sent")
             let timestamp = Date.now();
             let newDate = new Date(timestamp * 1000)
             let Hours = newDate.getHours()
@@ -451,6 +452,7 @@ require('firebase/database')
                 timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
                 user: this.firstname + this.surname,
                 Likes: this.Likes,
+                comments: ""
 
                 // timestamp: firebase.firestore.timestamp 
             })
@@ -459,22 +461,23 @@ require('firebase/database')
     },
     postComment(email){
         console.log(email)
-        
+        alert("comments")
         var comments = {
             email: this.email,
             comment: this.newComment,
             timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
             user: this.firstname + this.surname,
             }
-
+        console.log(comments)
         db.collection("posts").doc(email).get().then(snapshot => {
-            console.log(snapshot.data())
-                var allComments = []
-                allComments.push(snapshot.data().comments)
-                allComments.push(comments)
-                const Posts = db.collection("posts").doc(email).update({
-                    comments : allComments
-                })
+            console.log(" this is it",snapshot.data())
+            var allComments = snapshot.data().comments
+            console.log(allComments)
+            allComments.push(comments)
+            console.log(allComments)
+            const Posts = db.collection("posts").doc(email).update({
+                comments : allComments
+            })
         })
         
     },
@@ -576,29 +579,7 @@ require('firebase/database')
         });
     } 
         },
-       postComment(email){
-        console.log(email)
-        
-        var comments = {
-            email: Firebase.auth().currentUser.email,
-            comment: this.newComment,
-            timestamp: new Date().toJSON().slice(0,10).replace(/-/g,'/'),
-            user: this.firstname + this.surname,
-            }
-
-        db.collection("posts").doc(email).get().then(snapshot => {
-                console.log(snapshot.data())
-                var allComments = []
-                allComments.push(snapshot.data().comments)
-                allComments.push(comments)
-                const Posts = db.collection("posts").doc(email).update({
-                    comments : allComments
-                })
-        })
-        
-    },
     
-
 
 } // missing closure added
 
